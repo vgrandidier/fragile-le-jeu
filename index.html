@@ -101,6 +101,21 @@
                 <button onclick="loadPage('materiel')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="materiel">
                     <i data-lucide="package" class="w-5 h-5"></i> Matériel
                 </button>
+                <button onclick="loadPage('entrepot')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="entrepot">
+                    <i data-lucide="warehouse" class="w-5 h-5"></i> Entrepôt
+                </button>
+                <button onclick="loadPage('ville')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="ville">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i> Ville
+                </button>
+                <button onclick="loadPage('commandes')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="commandes">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i> Commandes
+                </button>
+                <button onclick="loadPage('banque')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="banque">
+                    <i data-lucide="credit-card" class="w-5 h-5"></i> Banque
+                </button>
+                <button onclick="loadPage('camions')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="camions">
+                    <i data-lucide="truck" class="w-5 h-5"></i> Camions
+                </button>
                 <button onclick="loadPage('setup')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="setup">
                     <i data-lucide="settings" class="w-5 h-5"></i> Mise en place
                 </button>
@@ -109,9 +124,6 @@
                 </button>
                 <button onclick="loadPage('stockage')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="stockage">
                     <i data-lucide="layers" class="w-5 h-5"></i> Stockage
-                </button>
-                <button onclick="loadPage('banque')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="banque">
-                    <i data-lucide="credit-card" class="w-5 h-5"></i> Banque
                 </button>
                 <button onclick="loadPage('fin')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="fin">
                     <i data-lucide="trophy" class="w-5 h-5"></i> Fin de partie
@@ -147,12 +159,14 @@
     <script>
         // --- DONNÉES DU JEU ---
         const galleryImages = [
-            { id: 0, title: "Couverture FRAGILE", src: "images/couverture.jpg", desc: "Illustration de couverture" },
-            { id: 1, title: "Plateau Central", src: "images/plateau_central.jpg", desc: "Vue d'ensemble du plateau" },
-            { id: 2, title: "Marché des Lots", src: "images/marche_lots.jpg", desc: "Focus sur les cartes Lots" },
-            { id: 3, title: "Composants", src: "images/monnaie.jpg", desc: "Détail des pièces et jetons" },
-            { id: 4, title: "Empilement", src: "images/empilement.jpg", desc: "Schémas de stockage" },
-            { id: 5, title: "Mise en place", src: "images/mise_en_place_global.jpg", desc: "Diagramme de départ" }
+            { id: 0, title: "Couverture FRAGILE", src: "images/fragile-cover.png", desc: "Couverture FRAGILE" },
+            { id: 1, title: "Vue d'ensemble", src: "images/materiel-vue-ensemble.png", desc: "Vue d'ensemble" },
+            { id: 2, title: "Plateau central", src: "images/ingame-04.jpg", desc: "Plateau central" },
+            { id: 3, title: "Influence des quartiers", src: "images/ingame-03.jpg", desc: "Influence des quartiers" },
+            { id: 4, title: "Colis dans l'entrepôt", src: "images/ingame-02.jpg", desc: "Colis dans l'entrepôt" },
+            { id: 5, title: "Matériel: les cubes", src: "images/materiel-cubes.png", desc: "Matériel: les cubes" },
+            { id: 6, title: "Matériel: les cartes", src: "images/materiel-cartes.png", desc: "Matériel: les cartes" },
+            { id: 7, title: "Matériel: les jetons et dés", src: "images/materiel-jetons.png", desc: "Matériel: les jetons et dés" }
         ];
 
         let currentGalleryIndex = 0;
@@ -179,10 +193,14 @@
                 case 'intro': renderIntro(container); break;
                 case 'galerie': renderGalerie(container); break;
                 case 'materiel': renderMateriel(container); break;
+                case 'entrepot': renderEntrepot(container); break;
+                case 'ville': renderVille(container); break;
+                case 'commandes': renderCommandes(container); break;
+                case 'banque': renderBanque(container); break;
+                case 'camions': renderCamions(container); break;
                 case 'setup': renderSetup(container); break;
                 case 'tour': renderTour(container); break;
                 case 'stockage': renderStockage(container); break;
-                case 'banque': renderBanque(container); break;
                 case 'fin': renderFin(container); break;
                 case 'questionnaire': renderQuestionnaire(container); break;
             }
@@ -197,20 +215,25 @@
         function renderIntro(container) {
             container.innerHTML = `
                 <div class="space-y-8">
-                    <div class="relative h-64 w-full bg-gray-900 rounded-[2.5rem] overflow-hidden flex items-center justify-center border-4 border-white shadow-2xl cursor-pointer group" onclick="openGallery(0)">
-                        <div class="absolute inset-0 bg-gradient-to-br from-red-600/20 to-transparent"></div>
-                        <span class="text-white font-black text-5xl italic tracking-tighter z-10 uppercase group-hover:scale-110 transition-transform">FRAGILE</span>
-                    </div>
                     <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-gray-100">
                         <h1 class="text-5xl font-black text-gray-900 mb-6 uppercase tracking-tighter italic flex items-center gap-4">
                             <div class="w-12 h-12 bg-fragile-red rounded-xl rotate-3 shadow-lg flex items-center justify-center text-white font-mono text-2xl">!</div>
-                            Bienvenue
+                            Bienvenue dans FRAGILE
                         </h1>
                         <div class="space-y-4 text-xl text-gray-700 leading-relaxed italic border-l-8 border-fragile-red pl-8">
-                            <p>"Plongez dans un entrepôt en plein rush avec FRAGILE, un jeu de gestion où chaque décision pèse sur votre bilan."</p>
+                            <p>Plongez dans un entrepôt en plein rush avec FRAGILE, un jeu de gestion et d'optimisation où
+chaque décision se répercute sur votre trésorerie.</p>
                         </div>
                         <p class="mt-10 text-lg text-gray-600 leading-relaxed">
-                            En tant que chef d'entreprise, jonglez entre acquisition de lots, organisation et livraisons. L'équilibre est précaire : la moindre erreur peut fragiliser votre société.
+                            En tant que chef d'entreprise, vous devrez jongler entre l'acquisition de lots de marchandises,
+l'organisation millimétrée de votre entrepôt et l'urgence des livraisons. Mais dans ce métier, l'équilibre est précaire : entre les contraintes strictes des produits sensibles, les
+exigences des différents quartiers de la ville et les imprévus qui menancent votre activité, la moindre
+erreur peut fragiliser votre bilan financier.
+                        </p>
+                        <p class="mt-10 text-lg text-gray-600 leading-relaxed">
+                            Saurez-vous dompter vos dettes et surmonter les crises pour bâtir la société de transport la plus
+prospère? Dans ce défi stratégique, la victoire appartient au gestionnaire le plus rigoureux, celui qui saura
+transformer la contrainte en opportunité. 
                         </p>
                     </div>
                 </div>
@@ -241,9 +264,46 @@
                 <div class="space-y-10">
                     <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Matériel</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        ${renderMaterialCard("Monnaie (Péz)", ["16 x 10 Péz", "24 x 5 Péz", "36 x 3 Péz", "48 x 1 Péz"], "images/monnaie.jpg")}
-                        ${renderMaterialCard("Ressources", ["12 Volants (Actions)", "12 Scanneurs (Log.)", "12 Essence (Liv.)"], "images/ressources.jpg")}
-                        ${renderMaterialCard("Composants", ["50 Cartes Lots", "20 Commandes", "1 Pion Fenwick"], "images/composants.jpg")}
+                        ${renderMaterialCard("Monnaie (Péz)", ["16 pièces de 10 Péz", "24 pièces de 5 Péz", "36 pièces de 3 Péz", "48 pièces de 1 Péz"], "images/materiel/monnaie.png")}
+                        ${renderMaterialCard("Ressources", ["12 cubes 'Volant'", "12 cubes 'Scanneur'", "12 cubes 'Bidon Essence'", "10 cubes 'Banque'"], "images/ressources.jpg")}
+                        ${renderMaterialCard("Joueurs", ["10 cubes 'Joueur 1'", "10 cubes 'Joueur 2'", "10 cubes 'Joueur 3'", "10 cubes 'Joueur 4'"], "images/composants.jpg")}
+                        ${renderMaterialCard("Evènements", ["12 plaques 'Flamme'", "12 plaques 'Flash'", "12 plaques 'Chantier'"], "images/composants.jpg")}
+                        ${renderMaterialCard("Colis", ["20 colis 'Surgelés' (bleu)", "20 colis 'Dangereux' (rouge)", "20 colis 'Hygiène' (vert)", "20 colis 'Restauration' (rose)", "20 colis 'Vêtements' (jaune)", "4 cubes 'Sécurité'"], "images/materiel/colis.png")}
+                        ${renderMaterialCard("Cartes", ["8 cartes 'Banque'", "30 cartes 'Commande 1 Colis'", "30 cartes 'Commande 2 Colis'", "4 cartes 'Camion Bleu'", "4 cartes 'Camion Blanc'"], "images/materiel/cartes.png")}
+                        ${renderMaterialCard("Dés", ["2 dés 'Evènements'", "1 dé 'Prix Essence'"], "images/materiel/colis.png")}
+                        ${renderMaterialCard("Plateaux", ["1 roue 'Etapes'", "4 plateaux 'Entrepôt'", "1 plateau 'Ville'", "1 panneau 'Influence et Tarifs'"], "images/composants.jpg")}
+                        ${renderMaterialCard("Autres", ["1 carnet 'Score'", "1 cube 'Premier Joueur'", "1 sac pour les colis"], "images/composants.jpg")}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEntrepot(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Mise en place</h2>
+                    
+                    <div class="relative w-full bg-gray-100 rounded-[2.5rem] border-4 border-white shadow-xl overflow-hidden cursor-zoom-in group" onclick="openZoom('images/materiel/entrepot.png', 'Schéma Global')">
+                        <img src="images/materiel/entrepot.png" class="w-full h-auto block group-hover:scale-105 transition-transform duration-500" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20">
+                            <i data-lucide="map" class="w-16 h-16 mb-2"></i>
+                            <span class="font-black uppercase italic text-center text-sm">[Image : Schéma Global de Mise en Place]</span>
+                        </div>
+                        <div class="absolute bottom-4 left-6 bg-black/50 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-bold">
+                            Cliquer pour zoomer
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        ${renderSetupDetail(1, "", "Quai de chargement pour camion bleu")}
+                        ${renderSetupDetail(2, "", "Quai de chargement pour camion blanc")}
+                        ${renderSetupDetail(3, "", "Zone réfrigérée pour stockage des colis bleus")}
+                        ${renderSetupDetail(4, "", "Zone de stockage des colis rouges, roses, jaunes et verts")}
+                        ${renderSetupDetail(5, "", "Zone de stockage des cubes 'Scanneur'")}
+                        ${renderSetupDetail(6, "", "Zone de stockage des cubes 'Bidon Essence'")}
+                        ${renderSetupDetail(7, "", "Emplacements pour cartes 'Commande'")}
+                        ${renderSetupDetail(8, "", "Emplacement pour cartes 'Commande' annulées")}
+                        ${renderSetupDetail(9, "", "Marque du nombre de livraisons")}
                     </div>
                 </div>
             `;
