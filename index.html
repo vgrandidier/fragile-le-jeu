@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRAGILE - Livret de Règles Officiel</title>
+    <!-- Tailwind CSS pour le style et le responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        :root {
+            --fragile-red: #D20604;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+        }
+
+        .bg-fragile-red { background-color: var(--fragile-red); }
+        .text-fragile-red { color: var(--fragile-red); }
+        .border-fragile-red { border-color: var(--fragile-red); }
+
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-bg {
+            background-color: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Masquer la barre de défilement pour Chrome, Safari et Opera */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="overflow-hidden">
+
+    <!-- MODAL ZOOM IMAGES -->
+    <div id="imageModal" class="fixed inset-0 z-[100] hidden modal-bg items-center justify-center p-4">
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:text-red-500 transition-colors">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        
+        <button id="prevBtn" onclick="navigateGallery(-1)" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white hover:bg-white/10 p-4 rounded-full hidden">
+            <i data-lucide="chevron-left" class="w-12 h-12"></i>
+        </button>
+
+        <div class="bg-white p-4 md:p-8 rounded-[2rem] max-w-5xl w-full shadow-2xl relative" onclick="event.stopPropagation()">
+            <div class="absolute top-0 left-0 w-full h-3 bg-fragile-red"></div>
+            <div class="aspect-video bg-gray-100 rounded-2xl flex items-center justify-center overflow-hidden border">
+                <img id="modalImg" src="" alt="Zoom" class="w-full h-full object-contain">
+                <div id="modalPlaceholder" class="hidden flex flex-col items-center justify-center text-gray-400 p-10 text-center italic">
+                    <i data-lucide="image" class="w-16 h-16 mb-4"></i>
+                    <p id="modalDescText"></p>
+                </div>
+            </div>
+            <div class="mt-4 flex justify-between items-center px-2">
+                <p id="modalTitle" class="text-gray-500 font-bold uppercase tracking-widest text-xs italic"></p>
+                <span id="galleryCounter" class="bg-gray-900 text-white px-4 py-1 rounded-full font-mono text-xs hidden"></span>
+            </div>
+        </div>
+
+        <button id="nextBtn" onclick="navigateGallery(1)" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white hover:bg-white/10 p-4 rounded-full hidden">
+            <i data-lucide="chevron-right" class="w-12 h-12"></i>
+        </button>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-80 bg-gray-900 border-r-8 border-fragile-red sidebar-transition -translate-x-full md:translate-x-0 md:relative flex flex-col">
+            <div class="p-10">
+                <h1 class="text-4xl font-black italic uppercase text-white tracking-tighter">
+                    FRA<span class="text-fragile-red">GI</span>LE
+                </h1>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-2">Logistics Simulator</p>
+            </div>
+
+            <nav class="flex-1 px-6 space-y-2 overflow-y-auto no-scrollbar">
+                <button onclick="loadPage('intro')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-white font-bold uppercase text-xs tracking-widest bg-fragile-red shadow-lg" data-page="intro">
+                    <i data-lucide="info" class="w-5 h-5"></i> Bienvenue
+                </button>
+                <button onclick="loadPage('galerie')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="galerie">
+                    <i data-lucide="image" class="w-5 h-5"></i> Galerie Photos
+                </button>
+                <button onclick="loadPage('materiel')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="materiel">
+                    <i data-lucide="package" class="w-5 h-5"></i> Matériel
+                </button>
+                <button onclick="loadPage('setup')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="setup">
+                    <i data-lucide="settings" class="w-5 h-5"></i> Mise en place
+                </button>
+                <button onclick="loadPage('tour')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="tour">
+                    <i data-lucide="rotate-cw" class="w-5 h-5"></i> Tour de Jeu
+                </button>
+                <button onclick="loadPage('stockage')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="stockage">
+                    <i data-lucide="layers" class="w-5 h-5"></i> Stockage
+                </button>
+                <button onclick="loadPage('banque')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="banque">
+                    <i data-lucide="credit-card" class="w-5 h-5"></i> Banque
+                </button>
+                <button onclick="loadPage('fin')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="fin">
+                    <i data-lucide="trophy" class="w-5 h-5"></i> Fin de partie
+                </button>
+                <button onclick="loadPage('questionnaire')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="questionnaire">
+                    <i data-lucide="message-square" class="w-5 h-5"></i> Questionnaire
+                </button>
+            </nav>
+
+            <div class="p-10 border-t border-gray-800">
+                <p class="text-[10px] text-gray-600 font-black uppercase tracking-widest italic">Livret Officiel V4</p>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col min-w-0">
+            <!-- Header Mobile -->
+            <header class="md:hidden bg-gray-900 text-white p-5 flex justify-between items-center shadow-xl">
+                <span class="font-black italic uppercase tracking-tighter">FRA<span class="text-fragile-red">GI</span>LE</span>
+                <button onclick="toggleSidebar()" class="p-2 bg-gray-800 rounded-xl hover:bg-fragile-red transition-colors">
+                    <i data-lucide="menu" id="menuIcon"></i>
+                </button>
+            </header>
+
+            <!-- Scrollable Content -->
+            <div id="content" class="flex-1 overflow-y-auto p-6 md:p-16 lg:p-24 bg-white">
+                <!-- LE CONTENU SERA INJECTÉ ICI PAR JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- SCRIPTS ET TEMPLATES -->
+    <script>
+        // --- DONNÉES DU JEU ---
+        const galleryImages = [
+            { id: 0, title: "Couverture FRAGILE", src: "images/couverture.jpg", desc: "Illustration de couverture" },
+            { id: 1, title: "Plateau Central", src: "images/plateau_central.jpg", desc: "Vue d'ensemble du plateau" },
+            { id: 2, title: "Marché des Lots", src: "images/marche_lots.jpg", desc: "Focus sur les cartes Lots" },
+            { id: 3, title: "Composants", src: "images/monnaie.jpg", desc: "Détail des pièces et jetons" },
+            { id: 4, title: "Empilement", src: "images/empilement.jpg", desc: "Schémas de stockage" },
+            { id: 5, title: "Mise en place", src: "images/mise_en_place_global.jpg", desc: "Diagramme de départ" }
+        ];
+
+        let currentGalleryIndex = 0;
+
+        // --- MOTEUR DE NAVIGATION ---
+        function loadPage(pageId) {
+            const container = document.getElementById('content');
+            container.innerHTML = '';
+            container.className = "flex-1 overflow-y-auto p-6 md:p-16 lg:p-24 bg-white animate-fade-in";
+            
+            // Mise à jour de l'UI du menu
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                if(btn.dataset.page === pageId) {
+                    btn.classList.add('bg-fragile-red', 'text-white', 'shadow-lg');
+                    btn.classList.remove('text-gray-400', 'hover:bg-gray-800');
+                } else {
+                    btn.classList.remove('bg-fragile-red', 'text-white', 'shadow-lg');
+                    btn.classList.add('text-gray-400', 'hover:bg-gray-800');
+                }
+            });
+
+            // Injection du contenu selon la page
+            switch(pageId) {
+                case 'intro': renderIntro(container); break;
+                case 'galerie': renderGalerie(container); break;
+                case 'materiel': renderMateriel(container); break;
+                case 'setup': renderSetup(container); break;
+                case 'tour': renderTour(container); break;
+                case 'stockage': renderStockage(container); break;
+                case 'banque': renderBanque(container); break;
+                case 'fin': renderFin(container); break;
+                case 'questionnaire': renderQuestionnaire(container); break;
+            }
+
+            if(window.innerWidth < 768) toggleSidebar(false);
+            lucide.createIcons();
+            window.scrollTo(0, 0);
+        }
+
+        // --- FONCTIONS DE RENDU ---
+
+        function renderIntro(container) {
+            container.innerHTML = `
+                <div class="space-y-8">
+                    <div class="relative h-64 w-full bg-gray-900 rounded-[2.5rem] overflow-hidden flex items-center justify-center border-4 border-white shadow-2xl cursor-pointer group" onclick="openGallery(0)">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-600/20 to-transparent"></div>
+                        <span class="text-white font-black text-5xl italic tracking-tighter z-10 uppercase group-hover:scale-110 transition-transform">FRAGILE</span>
+                    </div>
+                    <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-gray-100">
+                        <h1 class="text-5xl font-black text-gray-900 mb-6 uppercase tracking-tighter italic flex items-center gap-4">
+                            <div class="w-12 h-12 bg-fragile-red rounded-xl rotate-3 shadow-lg flex items-center justify-center text-white font-mono text-2xl">!</div>
+                            Bienvenue
+                        </h1>
+                        <div class="space-y-4 text-xl text-gray-700 leading-relaxed italic border-l-8 border-fragile-red pl-8">
+                            <p>"Plongez dans un entrepôt en plein rush avec FRAGILE, un jeu de gestion où chaque décision pèse sur votre bilan."</p>
+                        </div>
+                        <p class="mt-10 text-lg text-gray-600 leading-relaxed">
+                            En tant que chef d'entreprise, jonglez entre acquisition de lots, organisation et livraisons. L'équilibre est précaire : la moindre erreur peut fragiliser votre société.
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGalerie(container) {
+            let grid = galleryImages.map((img, idx) => `
+                <div onclick="openGallery(${idx})" class="aspect-square bg-gray-100 rounded-[2rem] border-4 border-white shadow-sm hover:shadow-xl hover:scale-[1.03] transition-all cursor-zoom-in overflow-hidden relative group">
+                    <img src="${img.src}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div class="hidden absolute inset-0 flex flex-col items-center justify-center bg-gray-50 text-gray-400 p-4 text-center">
+                        <i data-lucide="image" class="w-8 h-8 mb-2"></i>
+                        <span class="text-[9px] font-black uppercase">${img.title}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Galerie Photos</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">${grid}</div>
+                </div>
+            `;
+        }
+
+        function renderMateriel(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Matériel</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        ${renderMaterialCard("Monnaie (Péz)", ["16 x 10 Péz", "24 x 5 Péz", "36 x 3 Péz", "48 x 1 Péz"], "images/monnaie.jpg")}
+                        ${renderMaterialCard("Ressources", ["12 Volants (Actions)", "12 Scanneurs (Log.)", "12 Essence (Liv.)"], "images/ressources.jpg")}
+                        ${renderMaterialCard("Composants", ["50 Cartes Lots", "20 Commandes", "1 Pion Fenwick"], "images/composants.jpg")}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSetup(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Mise en place</h2>
+                    
+                    <div class="relative h-80 bg-gray-100 rounded-[2.5rem] border-4 border-white shadow-xl overflow-hidden cursor-zoom-in group" onclick="openZoom('images/mise_en_place_global.jpg', 'Schéma Global')">
+                        <img src="images/mise_en_place_global.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden absolute inset-0 flex flex-col items-center justify-center text-gray-300">
+                            <i data-lucide="map" class="w-16 h-16 mb-2"></i>
+                            <span class="font-black uppercase italic">[Image : Schéma Global]</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        ${renderSetupDetail(1, "L'Entrepôt", "Placez le plateau au centre de la table.")}
+                        ${renderSetupDetail(2, "Les Cartes", "Mélangez et disposez les lots et les commandes.")}
+                        ${renderSetupDetail(3, "Dotation", "Chaque joueur prend 5 Péz et 1 cube de chaque type.")}
+                        ${renderSetupDetail(4, "Ville", "Disposez les 4 quartiers autour du plateau.")}
+                        ${renderSetupDetail(5, "Départ", "Désignez le premier joueur (Pion Fenwick).")}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTour(container) {
+            const phases = [
+                {id:1, t:"Achat de Lots", d:"Les joueurs achètent des lots sur le marché selon leurs Péz et espace libre."},
+                {id:2, t:"Organisation", d:"Stockage critique : respectez le poids et l'équilibre des piles."},
+                {id:3, t:"Chargement", d:"Utilisez vos Scanneurs pour charger les palettes dans les camions."},
+                {id:4, t:"Livraison", d:"Consommez de l'essence pour livrer dans les différents quartiers."},
+                {id:5, t:"Revenus", d:"Encaissez vos bénéfices et payez vos frais de stockage."}
+            ];
+
+            let cards = phases.map(p => `
+                <div class="bg-white border-2 border-gray-200 rounded-3xl overflow-hidden hover:border-fragile-red transition-all shadow-sm">
+                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="w-full p-6 flex items-center gap-6 text-left">
+                        <div class="w-12 h-12 bg-fragile-red text-white font-black rounded-2xl flex items-center justify-center text-xl">${p.id}</div>
+                        <span class="font-black uppercase tracking-tight text-lg flex-1">${p.t}</span>
+                        <i data-lucide="chevron-down" class="text-gray-300"></i>
+                    </button>
+                    <div class="hidden p-8 border-t bg-gray-50 space-y-4">
+                        <p class="text-gray-700 italic">"${p.d}"</p>
+                        <div class="aspect-video bg-gray-200 rounded-2xl flex items-center justify-center text-gray-400 text-xs italic">
+                            [Image : Illustration Étape ${p.id}]
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Le Tour de Jeu</h2>
+                    <div class="grid gap-4">${cards}</div>
+                </div>
+            `;
+        }
+
+        function renderStockage(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4 text-fragile-red flex items-center gap-4">
+                        <i data-lucide="layers" class="w-10 h-10"></i> Stockage
+                    </h2>
+                    <div class="grid lg:grid-cols-2 gap-10">
+                        <div class="space-y-6">
+                            <div class="bg-fragile-red text-white p-8 rounded-[2rem] shadow-xl transform -rotate-1">
+                                <h4 class="font-black text-2xl uppercase italic mb-2">L'Équilibre Précaire</h4>
+                                <p class="opacity-90">Un faux mouvement peut briser votre bilan.</p>
+                            </div>
+                            <div class="space-y-4">
+                                ${renderRuleBlock("Poids", "Léger (1), Moyen (3), Lourd (6). Max 10 par case.")}
+                                ${renderRuleBlock("Hauteur", "Maximum 3 niveaux (marchandises + palettes).")}
+                                ${renderRuleBlock("Stabilité", "Pas de lourd sur fragile sans palette intercalaire.")}
+                            </div>
+                        </div>
+                        <div class="bg-gray-100 rounded-[2rem] p-10 flex flex-col items-center justify-center border-4 border-white shadow-inner cursor-zoom-in" onclick="openZoom('images/empilement.jpg', 'Schéma de stockage')">
+                            <i data-lucide="alert-triangle" class="w-16 h-16 text-gray-200 mb-4"></i>
+                            <span class="text-xs text-gray-400 uppercase font-black tracking-widest">[Image : Schéma de Stockage]</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderBanque(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Banque</h2>
+                    <div class="bg-white p-10 rounded-[3rem] border-4 border-gray-900 shadow-xl space-y-8">
+                        <p class="text-xl text-gray-600 italic border-l-8 border-fragile-red pl-8">"L'emprunt est une bouée de sauvetage qui peut devenir un boulet."</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="p-8 bg-red-50 rounded-[2rem] border-2 border-red-100">
+                                <h3 class="font-black text-fragile-red uppercase mb-4">Emprunter</h3>
+                                <p class="text-sm">Prenez 15 Péz immédiatement. Avancez sur la piste de dette.</p>
+                            </div>
+                            <div class="p-8 bg-gray-900 text-white rounded-[2rem]">
+                                <h3 class="font-black uppercase mb-4">Intérêts</h3>
+                                <p class="text-sm">Chaque tour sans remboursement ajoute 2 Péz à votre dette finale.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFin(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Bilan Final</h2>
+                    <div class="bg-gray-900 text-white p-12 rounded-[4rem] shadow-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-red-600/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+                        <div class="relative z-10 space-y-8 max-w-xl mx-auto">
+                            ${renderScoreLine("Bénéfices", "Contrats livrés", "+ VAL", "text-green-400")}
+                            ${renderScoreLine("Trésorerie", "Péz restants", "+ VAL", "text-green-400")}
+                            <div class="h-px bg-gray-800 my-4"></div>
+                            ${renderScoreLine("Attente", "Lots non livrés", "- 5 Péz", "text-red-400")}
+                            ${renderScoreLine("Dettes", "Emprunts non soldés", "- DETTE", "text-red-400")}
+                            <div class="pt-10 flex justify-between items-center border-t border-gray-800 mt-8">
+                                <span class="text-4xl font-black italic uppercase text-yellow-500">Score</span>
+                                <span class="text-6xl font-black italic text-white">= ?</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderQuestionnaire(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-fragile-red pb-4 text-fragile-red">Questionnaire</h2>
+                    <div class="bg-white p-12 rounded-[3.5rem] border-4 border-gray-900 shadow-2xl">
+                        <h3 class="text-3xl font-black text-gray-900 italic mb-6 uppercase">Votre avis compte !</h3>
+                        <p class="text-xl text-gray-700 leading-relaxed mb-10">
+                            Afin d'améliorer le jeu (matériel, règles ou gameplay), merci de prendre 2 minutes pour répondre au questionnaire en ligne.
+                        </p>
+                        <a href="#" class="inline-flex items-center gap-4 bg-fragile-red text-white px-12 py-6 rounded-3xl font-black uppercase italic tracking-widest hover:scale-105 transition-transform shadow-xl">
+                            Accéder au formulaire <i data-lucide="external-link"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- COMPOSANTS UI REUTILISABLES ---
+
+        function renderMaterialCard(title, items, imgSrc) {
+            return `
+                <div class="bg-white p-8 rounded-[2.5rem] border-2 border-gray-100 shadow-sm hover:shadow-xl transition-all group">
+                    <div class="h-40 bg-gray-50 rounded-2xl mb-6 flex items-center justify-center overflow-hidden border-4 border-white shadow-inner cursor-zoom-in group-hover:border-red-200 transition-colors" onclick="openZoom('${imgSrc}', '${title}')">
+                        <img src="${imgSrc}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <span class="hidden p-6 text-gray-400 text-xs italic text-center">[Image : ${title}]</span>
+                    </div>
+                    <h4 class="font-black text-gray-900 text-sm uppercase mb-4 border-b-4 border-fragile-red pb-1 inline-block tracking-tighter">${title}</h4>
+                    <ul class="space-y-2">
+                        ${items.map(i => `<li class="text-xs text-gray-500 font-bold flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-fragile-red"></div> ${i}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function renderSetupDetail(num, title, desc) {
+            return `
+                <div class="flex gap-6 p-4 bg-white items-start">
+                    <div class="w-7 h-7 bg-fragile-red text-white rounded-full flex items-center justify-center text-sm font-black shrink-0">
+                        ${num}
+                    </div>
+                    <div>
+                        <h3 class="font-black text-gray-900 text-lg uppercase mb-1 italic tracking-tight">${title}</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">${desc}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderRuleBlock(title, text) {
+            return `
+                <div class="p-6 bg-white rounded-2xl border-2 border-gray-100 shadow-sm">
+                    <h5 class="font-black text-gray-900 text-sm mb-2 uppercase tracking-tight flex items-center gap-2">
+                        <div class="w-1 h-4 bg-fragile-red"></div> ${title}
+                    </h5>
+                    <p class="text-gray-500 text-sm leading-relaxed font-medium">${text}</p>
+                </div>
+            `;
+        }
+
+        function renderScoreLine(label, sub, val, color) {
+            return `
+                <div class="flex justify-between items-center group bg-white/5 p-4 rounded-2xl">
+                    <div>
+                        <span class="block font-black uppercase text-base tracking-widest">${label}</span>
+                        <span class="text-[10px] text-gray-500 italic uppercase font-bold">${sub}</span>
+                    </div>
+                    <div class="text-2xl font-mono font-black ${color}">${val}</div>
+                </div>
+            `;
+        }
+
+        // --- GESTION DES MODALES ET GALERIE ---
+
+        function openGallery(index) {
+            currentGalleryIndex = index;
+            const img = galleryImages[index];
+            updateModal(img.src, img.desc, img.title, true);
+            document.getElementById('imageModal').classList.remove('hidden');
+            document.getElementById('imageModal').classList.add('flex');
+        }
+
+        function openZoom(src, title) {
+            updateModal(src, "", title, false);
+            document.getElementById('imageModal').classList.remove('hidden');
+            document.getElementById('imageModal').classList.add('flex');
+        }
+
+        function updateModal(src, desc, title, isGallery) {
+            const img = document.getElementById('modalImg');
+            const placeholder = document.getElementById('modalPlaceholder');
+            const prev = document.getElementById('prevBtn');
+            const next = document.getElementById('nextBtn');
+            const counter = document.getElementById('galleryCounter');
+            
+            img.src = src;
+            img.style.display = 'block';
+            placeholder.classList.add('hidden');
+            document.getElementById('modalTitle').textContent = title || "Vue détaillée";
+            document.getElementById('modalDescText').textContent = desc || "";
+
+            img.onerror = () => {
+                img.style.display = 'none';
+                placeholder.classList.remove('hidden');
+            };
+
+            if(isGallery) {
+                prev.classList.remove('hidden');
+                next.classList.remove('hidden');
+                counter.classList.remove('hidden');
+                counter.textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+            } else {
+                prev.classList.add('hidden');
+                next.classList.add('hidden');
+                counter.classList.add('hidden');
+            }
+        }
+
+        function navigateGallery(dir) {
+            currentGalleryIndex += dir;
+            if(currentGalleryIndex < 0) currentGalleryIndex = galleryImages.length - 1;
+            if(currentGalleryIndex >= galleryImages.length) currentGalleryIndex = 0;
+            const img = galleryImages[currentGalleryIndex];
+            updateModal(img.src, img.desc, img.title, true);
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+            document.getElementById('imageModal').classList.remove('flex');
+        }
+
+        // --- NAVIGATION SIDEBAR ---
+        function toggleSidebar(force) {
+            const sidebar = document.getElementById('sidebar');
+            const icon = document.getElementById('menuIcon');
+            if(force === false || sidebar.classList.contains('translate-x-0')) {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+            } else {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+            }
+        }
+
+        // --- INITIALISATION ---
+        window.onload = () => {
+            loadPage('intro');
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
