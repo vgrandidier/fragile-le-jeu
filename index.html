@@ -50,34 +50,42 @@
 </head>
 <body class="overflow-hidden">
 
-    <!-- MODAL ZOOM IMAGES -->
-    <div id="imageModal" class="fixed inset-0 z-[100] hidden modal-bg items-center justify-center p-4">
-        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:text-red-500 transition-colors">
-            <i data-lucide="x" class="w-10 h-10"></i>
+    <!-- MODAL ZOOM PLEIN ÉCRAN -->
+    <div id="imageModal" class="fixed inset-0 z-[100] hidden modal-bg flex flex-col items-center justify-center p-2 md:p-4" onclick="closeModal()">
+        
+        <!-- Bouton Fermer (Haut Droite) -->
+        <button class="absolute top-4 right-4 md:top-8 md:right-8 text-white/50 hover:text-white transition-colors z-[110] p-2 bg-white/10 rounded-full">
+            <i data-lucide="x" class="w-8 h-8 md:w-10 md:h-10"></i>
         </button>
         
-        <button id="prevBtn" onclick="navigateGallery(-1)" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white hover:bg-white/10 p-4 rounded-full hidden">
-            <i data-lucide="chevron-left" class="w-12 h-12"></i>
+        <!-- Navigation Précédent -->
+        <button id="prevBtn" onclick="event.stopPropagation(); navigateGallery(-1)" class="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 text-white/30 hover:text-white hover:bg-white/10 p-2 md:p-4 rounded-full transition-all hidden z-[110]">
+            <i data-lucide="chevron-left" class="w-10 h-10 md:w-16 md:h-16"></i>
         </button>
 
-        <div class="bg-white p-4 md:p-8 rounded-[2rem] max-w-5xl w-full shadow-2xl relative" onclick="event.stopPropagation()">
-            <div class="absolute top-0 left-0 w-full h-3 bg-fragile-red"></div>
-            <div class="aspect-video bg-gray-100 rounded-2xl flex items-center justify-center overflow-hidden border">
-                <img id="modalImg" src="" alt="Zoom" class="w-full h-full object-contain">
-                <div id="modalPlaceholder" class="hidden flex flex-col items-center justify-center text-gray-400 p-10 text-center italic">
-                    <i data-lucide="image" class="w-16 h-16 mb-4"></i>
-                    <p id="modalDescText"></p>
-                </div>
-            </div>
-            <div class="mt-4 flex justify-between items-center px-2">
-                <p id="modalTitle" class="text-gray-500 font-bold uppercase tracking-widest text-xs italic"></p>
-                <span id="galleryCounter" class="bg-gray-900 text-white px-4 py-1 rounded-full font-mono text-xs hidden"></span>
+        <!-- Container Image -->
+        <div class="relative w-full h-full flex items-center justify-center" onclick="event.stopPropagation()">
+            <img id="modalImg" src="" alt="Zoom" class="max-w-full max-h-full object-contain shadow-2xl animate-fade-in select-none">
+            
+            <div id="modalPlaceholder" class="hidden flex flex-col items-center justify-center text-gray-500 p-10 text-center italic">
+                <i data-lucide="image" class="w-20 h-20 mb-4 opacity-20"></i>
+                <p id="modalDescText" class="text-white font-bold"></p>
             </div>
         </div>
 
-        <button id="nextBtn" onclick="navigateGallery(1)" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white hover:bg-white/10 p-4 rounded-full hidden">
-            <i data-lucide="chevron-right" class="w-12 h-12"></i>
+        <!-- Navigation Suivant -->
+        <button id="nextBtn" onclick="event.stopPropagation(); navigateGallery(1)" class="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 text-white/30 hover:text-white hover:bg-white/10 p-2 md:p-4 rounded-full transition-all hidden z-[110]">
+            <i data-lucide="chevron-right" class="w-10 h-10 md:w-16 md:h-16"></i>
         </button>
+
+        <!-- Barre d'infos (Bas) -->
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 flex flex-col md:flex-row justify-between items-center gap-4 pointer-events-none">
+            <div class="text-center md:text-left">
+                <p id="modalTitle" class="text-white font-black uppercase tracking-widest text-sm md:text-lg italic"></p>
+                <p id="modalSubTitle" class="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-1">Livret FRAGILE V4.0</p>
+            </div>
+            <span id="galleryCounter" class="bg-fragile-red text-white px-6 py-2 rounded-full font-black text-xs hidden shadow-lg"></span>
+        </div>
     </div>
 
     <div class="flex h-screen overflow-hidden">
@@ -215,9 +223,15 @@
         function renderIntro(container) {
             container.innerHTML = `
                 <div class="space-y-8">
+                    <div class="flex justify-center items-center">
+                        <img src="images/fragile-cover.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
+                            <i data-lucide="map" class="w-16 h-16 mb-2"></i>
+                            <span class="font-black uppercase italic text-center text-sm">[Image : Couverture FRAGILE]</span>
+                        </div>
+                    </div>
                     <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-gray-100">
                         <h1 class="text-5xl font-black text-gray-900 mb-6 uppercase tracking-tighter italic flex items-center gap-4">
-                            <div class="w-12 h-12 bg-fragile-red rounded-xl rotate-3 shadow-lg flex items-center justify-center text-white font-mono text-2xl">!</div>
                             Bienvenue dans FRAGILE
                         </h1>
                         <div class="space-y-4 text-xl text-gray-700 leading-relaxed italic border-l-8 border-fragile-red pl-8">
@@ -281,16 +295,13 @@ transformer la contrainte en opportunité.
         function renderEntrepot(container) {
             container.innerHTML = `
                 <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Mise en place</h2>
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Plateau 'Entrepôt'</h2>
                     
-                    <div class="relative w-full bg-gray-100 rounded-[2.5rem] border-4 border-white shadow-xl overflow-hidden cursor-zoom-in group" onclick="openZoom('images/materiel/entrepot.png', 'Schéma Global')">
-                        <img src="images/materiel/entrepot.png" class="w-full h-auto block group-hover:scale-105 transition-transform duration-500" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20">
+                    <div class="flex justify-center items-center">
+                        <img src="images/materiel/entrepot.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
                             <i data-lucide="map" class="w-16 h-16 mb-2"></i>
-                            <span class="font-black uppercase italic text-center text-sm">[Image : Schéma Global de Mise en Place]</span>
-                        </div>
-                        <div class="absolute bottom-4 left-6 bg-black/50 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-bold">
-                            Cliquer pour zoomer
+                            <span class="font-black uppercase italic text-center text-sm">[Image : Plateau 'Entrepôt']</span>
                         </div>
                     </div>
 
@@ -309,25 +320,187 @@ transformer la contrainte en opportunité.
             `;
         }
 
+        function renderVille(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Plateau 'Ville'</h2>
+                    
+                    <div class="flex justify-center items-center">
+                        <img src="images/materiel/ville.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
+                            <i data-lucide="map" class="w-16 h-16 mb-2"></i>
+                            <span class="font-black uppercase italic text-center text-sm">[Image : Plateau 'Ville']</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        ${renderSetupDetail(1, "", "Quartier 'Zone Résidentielle' avec 9 marqueurs d'influence")}
+                        ${renderSetupDetail(2, "", "Quartier 'Centre Ville' avec 9 marqueurs d'influence")}
+                        ${renderSetupDetail(3, "", "Quartier 'Centre Commercial' avec 9 marqueurs d'influence")}
+                        ${renderSetupDetail(4, "", "Quartier 'Zone Industrielle' avec 9 marqueurs d'influence")}
+                        ${renderSetupDetail(5, "", "Bâtiment 'Grossiste' avec 4 palettes de 4 emplacements")}
+                        ${renderSetupDetail(6, "", "Emplacement pour le dé 'Prix Essence'")}
+                        ${renderSetupDetail(7, "", "Bâtiment 'Banque' avec 2 emplacements pour cartes")} 
+                    </div>
+
+                    <p class="mt-10 text-sm text-gray-600 leading-relaxed">
+                        A 2 joueurs on ne joue que les zones bordées de bleu = 2 palettes chez le grossiste et 5 marqueurs d'influence par quartier.<br>
+                        A 3 joueurs on ne joue que les zones bordées de bleu et de jaune = 3 palettes chez le grossiste et 7 marqueurs d'influence par quartier.<br>
+                        A 4 joueurs on joue toutes les zones (bleu, jaune et violet) = 4 palettes chez le grossiste et 0 marqueurs par quartier.
+                    </p>
+
+                </div>
+            `;
+        }
+
+        function renderCommandes(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Cartes des Commandes</h2>
+                    
+                    <div class="flex justify-center items-center">
+                        <img src="images/materiel/commandes.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
+                            <i data-lucide="map" class="w-16 h-16 mb-2"></i>
+                            <span class="font-black uppercase italic text-center text-sm">[Image : Cartes des Commandes]</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        ${renderSetupDetail(1, "", "Pioche des cartes 'Commande 1 Colis'")}
+                        ${renderSetupDetail(2, "", "Pioche des cartes 'Commande 2 Colis'")}
+                        ${renderSetupDetail(3, "", "Carte 'Commande 1 Colis' face visible")}
+                        ${renderSetupDetail(4, "", "Carte 'Commande 2 Colis' face visible")}
+                        ${renderSetupDetail(5, "", "Couleur(s) du ou des colis de la commande")}
+                        ${renderSetupDetail(6, "", "Gain de la livraison des colis de la carte")}
+                        ${renderSetupDetail(7, "", "Malus fin de partie si la commande est chargée mais non livrée")} 
+                        ${renderSetupDetail(8, "", "Malus fin de partie si la commande n'est pas chargée")} 
+                        ${renderSetupDetail(9, "", "Malus fin de partie si la commande a été annulée")} 
+                   </div>
+                </div>
+            `;
+        }
+
+        function renderBanque(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Cartes 'Banque''</h2>
+                    
+                    <div class="flex justify-center items-center">
+                        <img src="images/materiel/banque.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
+                            <i data-lucide="map" class="w-16 h-16 mb-2"></i>
+                            <span class="font-black uppercase italic text-center text-sm">[Image : Cartes 'Banque']</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        ${renderSetupDetail(1, "", "Valeur du montant emprunté")}
+                        ${renderSetupDetail(2, "", "Valeur du montant à rembourser")}
+                        ${renderSetupDetail(3, "", "Valeur du palier de remboursement partiel")}
+                        ${renderSetupDetail(4, "", "Bonus de remboursement total de l'emprunt")}
+                   </div>
+                    <p class="mt-10 text-lg text-gray-600 leading-relaxed">
+                        Un cube 'Banque' permet de définir l'état de l'emprunt:
+                    </p>
+                    <div class="space-y-2">
+                        ${renderSetupDetail(5, "", "Début de l'emprunt = 24 Péz à rembourser")}
+                        ${renderSetupDetail(6, "", "Remboursement partiel de 12 Péz = Reste 12 Péz à rembourser")}
+                        ${renderSetupDetail(7, "", "Remboursement des 12 Péz restants = Reste 0 + Bonus de 4 Péz")}
+                   </div>
+
+                </div>
+            `;
+        }
+
+        function renderCamions(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Cartes 'Camions''</h2>
+                    
+                    <div class="flex justify-center items-center">
+                        <img src="images/materiel/camions.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
+                            <i data-lucide="map" class="w-16 h-16 mb-2"></i>
+                            <span class="font-black uppercase italic text-center text-sm">[Image : Cartes 'Camions']</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        ${renderSetupDetail(1, "", "Un camion blanc peut charger 3 colis (vert, jaune, rose ou rouge)")}
+                        ${renderSetupDetail(2, "", "Après une livraison la carte est retournée et n'est plus disponible pendant un tour")}
+                        ${renderSetupDetail(3, "", "Un camion bleu peut charger 3 colis bleus")}
+                        ${renderSetupDetail(4, "", "Après une livraison la carte est retournée et n'est plus disponible pendant un tour")}
+                   </div>
+
+                </div>
+            `;
+        }
+
         function renderSetup(container) {
             container.innerHTML = `
                 <div class="space-y-10">
                     <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Mise en place</h2>
                     
-                    <div class="relative h-80 bg-gray-100 rounded-[2.5rem] border-4 border-white shadow-xl overflow-hidden cursor-zoom-in group" onclick="openZoom('images/mise_en_place_global.jpg', 'Schéma Global')">
-                        <img src="images/mise_en_place_global.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="hidden absolute inset-0 flex flex-col items-center justify-center text-gray-300">
+                    <div class="flex justify-center items-center">
+                        <img src="images/mise-en-place.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
                             <i data-lucide="map" class="w-16 h-16 mb-2"></i>
-                            <span class="font-black uppercase italic">[Image : Schéma Global]</span>
+                            <span class="font-black uppercase italic text-center text-sm">[Image : Mise en place]</span>
                         </div>
                     </div>
 
+                    <p class="mt-10 text-lg text-gray-600 leading-relaxed">
+                        Chaque joueur place devant lui:
+                    </p>
                     <div class="space-y-2">
-                        ${renderSetupDetail(1, "L'Entrepôt", "Placez le plateau au centre de la table.")}
-                        ${renderSetupDetail(2, "Les Cartes", "Mélangez et disposez les lots et les commandes.")}
-                        ${renderSetupDetail(3, "Dotation", "Chaque joueur prend 5 Péz et 1 cube de chaque type.")}
-                        ${renderSetupDetail(4, "Ville", "Disposez les 4 quartiers autour du plateau.")}
-                        ${renderSetupDetail(5, "Départ", "Désignez le premier joueur (Pion Fenwick).")}
+                        ${renderSetupDetail(1, "", "1 plateau 'Entrepôt'")}
+                        ${renderSetupDetail(2, "", "12 cubes 'Joueur' de sa couleur (marque des livraisons)")}
+                        ${renderSetupDetail(3, "", "Une trésorerie de 80 Péz (3x10 + 5x5 + 5x3 + 10x1)")}
+                   </div>
+                    <p class="mt-10 text-lg text-gray-600 leading-relaxed">
+                        Positionner au centre de la table:
+                    </p>
+                    <div class="space-y-2">
+                        ${renderSetupDetail(4, "", "Le plateau 'Ville'")}
+                        ${renderSetupDetail(5, "", "Poser le dé 'Prix Essence' chez le grossiste")}
+                        ${renderSetupDetail(6, "", "Faire 2 pioches des 4 cartes 'Banque' et les poser faces visibles dans la banque")}
+                        ${renderSetupDetail(7, "", "Poser le panneau d'aide de l'influence des quartiers + tarifs")}
+                   </div>
+                    <p class="mt-10 text-lg text-gray-600 leading-relaxed">
+                        A droite du plateau, positionner:
+                    </p>
+                    <div class="space-y-2">
+                        ${renderSetupDetail(8, "", "Les 4 cartes 'Camion Bleu' et les 8 cartes 'Camion Blanc'")}
+                        ${renderSetupDetail(9, "", "Les 4 cubes 'Sécurité'")}
+                        ${renderSetupDetail(10, "", "La pioche des commandes avec: une pioche des cartes 'Commande 1 Colis' + 1 carte face visible et une pioche des cartes 'Commande 2 Colis' + 1 carte face visible")}
+                   </div>                
+                    <p class="mt-10 text-lg text-gray-600 leading-relaxed">
+                        A gauche du plateau, positionner:
+                    </p>
+                    <div class="space-y-2">
+                        ${renderSetupDetail(11, "", "Les plaques 'Flamme', 'Flash' et 'Chantier'")}
+                        ${renderSetupDetail(12, "", "La roue des étapes et les 2 dés 'Evènements'")}
+                        ${renderSetupDetail(13, "", "Les 10 cubes 'Banque'")}
+                        ${renderSetupDetail(14, "", "Les cubes 'Scanneur', 'Volant' et 'Bidon Essence'")}
+                        ${renderSetupDetail(15, "", "La trésorerie des pièces de 10 Péz, 5 Péz, 3 Péz et 1 Péz")}
+                   </div>                
+                    <div class="bg-red-50 p-8 rounded-3xl border border-red-100">
+                        <h3 class="text-xl font-black uppercase italic mb-4 text-fragile-red">Structure d'un tour de jeu</h3>
+                        <ul class="list-disc ml-6 space-y-2 text-gray-700">
+                            <li>En début de partie, tirer au sort le joueur qui possédera le cube 'Premier Joueur' pour le 1er tour.</li>
+                            <li>Puis chaque joueur positionne un cube 'Joueur' de sa couleur sur la case 'Start' (icone 'Camion') du marqueur du nombre de livraisons de son plateau 'Entrepôt'.</li>
+                            <li>Une partie de joue avec des tours de 6 étapes qui sont symbolisées sur la roue.</li>
+                            <li>La flèche permet d'indiquer l'étape en cours et elle est positionnée au départ sur l'étape 1.</li>
+                            <li>C'est le joueur possédant le cube 'Premier Joueur' qui est en charge de déplacer la flèche pour indiquer le changement d'étape.</li>
+                        </ul>
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <img src="images/materiel/roue.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
+                            <i data-lucide="map" class="w-16 h-16 mb-2"></i>
+                            <span class="font-black uppercase italic text-center text-sm">[Image : Roue des étapes]</span>
+                        </div>
                     </div>
                 </div>
             `;
@@ -335,28 +508,128 @@ transformer la contrainte en opportunité.
 
         function renderTour(container) {
             const phases = [
-                {id:1, t:"Achat de Lots", d:"Les joueurs achètent des lots sur le marché selon leurs Péz et espace libre."},
-                {id:2, t:"Organisation", d:"Stockage critique : respectez le poids et l'équilibre des piles."},
-                {id:3, t:"Chargement", d:"Utilisez vos Scanneurs pour charger les palettes dans les camions."},
-                {id:4, t:"Livraison", d:"Consommez de l'essence pour livrer dans les différents quartiers."},
-                {id:5, t:"Revenus", d:"Encaissez vos bénéfices et payez vos frais de stockage."}
+                {
+                    id: 1, 
+                    t: "Achat de Lots", 
+                    content: [
+                        { type: 'p', text: "Cette étape est obligatoire." },
+                        { type: 'p', text: "Dans le sac des colis, tirer au sort des lots de 4 colis et positionner chaque lot sur une palette du plateau 'Grossiste'. Il faut un lot par joueur." },
+                        { type: 'p', text: "Le joueur possédant le cube 'Premier Joueur' achète 3 colis du lot de son choix. Le colis restant est remis dans le sac des colis. Le prix du lot est calculé en fonction de la couleur des colis qui le compose:." },
+                        { type: 'list', items: [
+                            "4 Péz pour un colis bleu",
+                            "3 Péz pour un colis rouge",
+                            "2 Péz pour un colis vert, rose ou jaune"
+                        ]},
+                        { type: 'p', text: "Ensuite il doit les positionner dans son entrepôt en respectant les règles suivantes:" },
+                        { type: 'list', items: [
+                            "Un colis bleu est obligatoirement positionné sur une case bleuu.",
+                            "Une case bleue ne peut contenir qu'un colis bleu.",
+                            "Un colis rouge, vert, rose ou jaune est donc positionné sur une case blanche.",
+                            "2 colis d'une même couleur sont obligatoirement positionnés cote à cote:"
+                        ]},
+                        { type: 'image', src: "images/rules/step1-figure1.png"},
+                        { type: 'list', items: [
+                            "2 colis d'une couleur différente ne peuvent pas être cote à cote:"
+                        ]},
+                        { type: 'image', src: "images/rules/step1-figure1.png"},
+                        { type: 'p', text: "Si le joueur est dans l'impossibilité de positioner un (ou plusieurs) colis dans son entrepôt:" },
+                        { type: 'list', items: [
+                            "Il peut une seule fois par tour retirer un colis qui le gêne pour placer un nouveau colis.",
+                            "Le ou les colis qui n'ont pas pu être placés dans l'entrepôt sont remis dans le sac des colis avec une taxe de recyclage de 1 Péz par colis."
+                        ]},
+                    ]
+                },
+                {
+                    id: 2, 
+                    t: "Organisation & Stockage", 
+                    content: [
+                        { type: 'p', text: "Il s'agit de la phase la plus délicate du jeu. Vous devez organiser vos palettes dans votre entrepôt personnel." },
+                        { type: 'p', text: "Les règles de sécurité logistique s'appliquent strictement :" },
+                        { type: 'list', items: [
+                            "Respectez la limite de charge (10 points max par case).",
+                            "Respectez la hiérarchie des poids (Lourd en bas, Moyen au milieu, Léger en haut).",
+                            "L'usage des palettes de séparation est obligatoire pour empiler des marchandises lourdes sur des produits fragiles."
+                        ]}
+                    ]
+                },
+                {
+                    id: 3, 
+                    t: "Chargement", 
+                    content: [
+                        { type: 'p', text: "Préparez vos camions en fonction des commandes que vous avez acceptées." },
+                        { type: 'list', items: [
+                            "Dépensez 1 cube Scanneur (Logistique) par palette déplacée de l'entrepôt vers un camion.",
+                            "Un camion ne peut quitter l'entrepôt que si sa commande est intégralement chargée."
+                        ]}
+                    ]
+                },
+                {
+                    id: 4, 
+                    t: "Livraison", 
+                    content: [
+                        { type: 'p', text: "Le transport à travers la ville nécessite une gestion rigoureuse du carburant." },
+                        { type: 'list', items: [
+                            "Chaque trajet entre deux quartiers coûte 1 cube Essence.",
+                            "Respectez les restrictions spécifiques de chaque zone (ex: silence en zone résidentielle).",
+                            "Une fois livré, encaissez immédiatement vos bénéfices."
+                        ]}
+                    ]
+                },
+                {
+                    id: 5, 
+                    t: "Revenus & Maintenance", 
+                    content: [
+                        { type: 'p', text: "Le tour se termine par une phase administrative obligatoire." },
+                        { type: 'list', items: [
+                            "Frais de stockage : payez 1 Péz par lot non livré resté dans votre entrepôt.",
+                            "Récupérez tous vos cubes de ressources utilisés.",
+                            "Piochez une carte Évènement et appliquez ses effets immédiatement ou pour le tour suivant selon le texte."
+                        ]}
+                    ]
+                }
             ];
 
-            let cards = phases.map(p => `
-                <div class="bg-white border-2 border-gray-200 rounded-3xl overflow-hidden hover:border-fragile-red transition-all shadow-sm">
-                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="w-full p-6 flex items-center gap-6 text-left">
-                        <div class="w-12 h-12 bg-fragile-red text-white font-black rounded-2xl flex items-center justify-center text-xl">${p.id}</div>
-                        <span class="font-black uppercase tracking-tight text-lg flex-1">${p.t}</span>
-                        <i data-lucide="chevron-down" class="text-gray-300"></i>
-                    </button>
-                    <div class="hidden p-8 border-t bg-gray-50 space-y-4">
-                        <p class="text-gray-700 italic">"${p.d}"</p>
-                        <div class="aspect-video bg-gray-200 rounded-2xl flex items-center justify-center text-gray-400 text-xs italic">
-                            [Image : Illustration Étape ${p.id}]
+            let cards = phases.map(p => {
+                // Génération dynamique du contenu HTML selon le type (p, list ou image)
+                const contentHtml = p.content.map(block => {
+                    if (block.type === 'p') {
+                        return `<p class="text-gray-700 italic font-medium leading-relaxed">${block.text}</p>`;
+                    } else if (block.type === 'list') {
+                        return `
+                            <ul class="list-disc ml-6 space-y-2 text-gray-600 text-sm">
+                                ${block.items.map(li => `<li>${li}</li>`).join('')}
+                            </ul>
+                        `;
+                    } else if (block.type === 'image') {
+                        return `
+                            <div class="flex justify-left ">
+                                <img 
+                                    src="${block.src}" 
+                                    alt="Illustration étape" 
+                                    class="max-w-full h-auto block select-none"
+                                    onerror="this.parentElement.style.display='none'"
+                                >
+                            </div>
+                        `;
+                    }
+                    return '';
+                }).join('');
+
+                return `
+                    <div class="bg-white border-2 border-gray-200 rounded-3xl overflow-hidden hover:border-fragile-red transition-all shadow-sm">
+                        <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="w-full p-6 flex items-center gap-6 text-left">
+                            <div class="w-12 h-12 bg-fragile-red text-white font-black rounded-2xl flex items-center justify-center text-xl">${p.id}</div>
+                            <span class="font-black uppercase tracking-tight text-lg flex-1">${p.t}</span>
+                            <i data-lucide="chevron-down" class="text-gray-300"></i>
+                        </button>
+                        <div class="hidden p-8 border-t bg-gray-50 space-y-6">
+                            <div class="space-y-4">
+                                ${contentHtml}
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             container.innerHTML = `
                 <div class="space-y-10">
@@ -387,27 +660,6 @@ transformer la contrainte en opportunité.
                         <div class="bg-gray-100 rounded-[2rem] p-10 flex flex-col items-center justify-center border-4 border-white shadow-inner cursor-zoom-in" onclick="openZoom('images/empilement.jpg', 'Schéma de stockage')">
                             <i data-lucide="alert-triangle" class="w-16 h-16 text-gray-200 mb-4"></i>
                             <span class="text-xs text-gray-400 uppercase font-black tracking-widest">[Image : Schéma de Stockage]</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderBanque(container) {
-            container.innerHTML = `
-                <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Banque</h2>
-                    <div class="bg-white p-10 rounded-[3rem] border-4 border-gray-900 shadow-xl space-y-8">
-                        <p class="text-xl text-gray-600 italic border-l-8 border-fragile-red pl-8">"L'emprunt est une bouée de sauvetage qui peut devenir un boulet."</p>
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="p-8 bg-red-50 rounded-[2rem] border-2 border-red-100">
-                                <h3 class="font-black text-fragile-red uppercase mb-4">Emprunter</h3>
-                                <p class="text-sm">Prenez 15 Péz immédiatement. Avancez sur la piste de dette.</p>
-                            </div>
-                            <div class="p-8 bg-gray-900 text-white rounded-[2rem]">
-                                <h3 class="font-black uppercase mb-4">Intérêts</h3>
-                                <p class="text-sm">Chaque tour sans remboursement ajoute 2 Péz à votre dette finale.</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -478,7 +730,7 @@ transformer la contrainte en opportunité.
                     </div>
                     <div>
                         <h3 class="font-black text-gray-900 text-lg uppercase mb-1 italic tracking-tight">${title}</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">${desc}</p>
+                        <p class="text-gray-600 text-lg leading-relaxed">${desc}</p>
                     </div>
                 </div>
             `;
