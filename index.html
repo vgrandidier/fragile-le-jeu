@@ -96,7 +96,7 @@
                 <h1 class="text-4xl font-black italic uppercase text-white tracking-tighter">
                     FRA<span class="text-fragile-red">GI</span>LE
                 </h1>
-                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-2">Logistics Simulator</p>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-2">Un faux mouvement, et tout s'écroule!</p>
             </div>
 
             <nav class="flex-1 px-6 space-y-2 overflow-y-auto no-scrollbar">
@@ -142,7 +142,7 @@
             </nav>
 
             <div class="p-10 border-t border-gray-800">
-                <p class="text-[10px] text-gray-600 font-black uppercase tracking-widest italic">Livret Officiel V4</p>
+                <p class="text-[10px] text-gray-600 font-black uppercase tracking-widest italic">PROTOTYPE V4</p>
             </div>
         </aside>
 
@@ -297,7 +297,7 @@ transformer la contrainte en opportunité.
                 <div class="space-y-10">
                     <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Plateau 'Entrepôt'</h2>
                     
-                    <div class="flex justify-center items-center">
+                    <div class="flex justify-left items-center">
                         <img src="images/materiel/entrepot.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
                             <i data-lucide="map" class="w-16 h-16 mb-2"></i>
@@ -310,10 +310,10 @@ transformer la contrainte en opportunité.
                         ${renderSetupDetail(2, "", "Quai de chargement pour camion blanc")}
                         ${renderSetupDetail(3, "", "Zone réfrigérée pour stockage des colis bleus")}
                         ${renderSetupDetail(4, "", "Zone de stockage des colis rouges, roses, jaunes et verts")}
-                        ${renderSetupDetail(5, "", "Zone de stockage des cubes 'Scanneur'")}
-                        ${renderSetupDetail(6, "", "Zone de stockage des cubes 'Bidon Essence'")}
-                        ${renderSetupDetail(7, "", "Emplacements pour cartes 'Commande'")}
-                        ${renderSetupDetail(8, "", "Emplacement pour cartes 'Commande' annulées")}
+                        ${renderSetupDetail(5, "", "Zone de stockage des cubes '<span class='text-fragile-red font-bold'>Scanneur</span>'")}
+                        ${renderSetupDetail(6, "", "Zone de stockage des cubes '<span class='text-fragile-red font-bold'>Bidon Essence</span>'")}
+                        ${renderSetupDetail(7, "", "Emplacements pour cartes '<span class='text-fragile-red font-bold'>Commande</span>'")}
+                        ${renderSetupDetail(8, "", "Emplacement pour cartes '<span class='text-fragile-red font-bold'>Commande</span>' annulées")}
                         ${renderSetupDetail(9, "", "Marque du nombre de livraisons")}
                     </div>
                 </div>
@@ -325,7 +325,7 @@ transformer la contrainte en opportunité.
                 <div class="space-y-10">
                     <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Plateau 'Ville'</h2>
                     
-                    <div class="flex justify-center items-center">
+                    <div class="flex justify-left items-center">
                         <img src="images/materiel/ville.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
                             <i data-lucide="map" class="w-16 h-16 mb-2"></i>
@@ -334,13 +334,13 @@ transformer la contrainte en opportunité.
                     </div>
 
                     <div class="space-y-2">
-                        ${renderSetupDetail(1, "", "Quartier 'Zone Résidentielle' avec 9 marqueurs d'influence")}
-                        ${renderSetupDetail(2, "", "Quartier 'Centre Ville' avec 9 marqueurs d'influence")}
-                        ${renderSetupDetail(3, "", "Quartier 'Centre Commercial' avec 9 marqueurs d'influence")}
-                        ${renderSetupDetail(4, "", "Quartier 'Zone Industrielle' avec 9 marqueurs d'influence")}
-                        ${renderSetupDetail(5, "", "Bâtiment 'Grossiste' avec 4 palettes de 4 emplacements")}
-                        ${renderSetupDetail(6, "", "Emplacement pour le dé 'Prix Essence'")}
-                        ${renderSetupDetail(7, "", "Bâtiment 'Banque' avec 2 emplacements pour cartes")} 
+                        ${renderSetupDetail(1, "", "Quartier '<span class='text-fragile-red font-bold'>Zone Résidentielle</span>' avec 9 marqueurs d'influence")}
+                        ${renderSetupDetail(2, "", "Quartier '<span class='text-fragile-red font-bold'>Centre Ville</span>' avec 9 marqueurs d'influence")}
+                        ${renderSetupDetail(3, "", "Quartier '<span class='text-fragile-red font-bold'>Centre Commercial</span>' avec 9 marqueurs d'influence")}
+                        ${renderSetupDetail(4, "", "Quartier '<span class='text-fragile-red font-bold'>Zone Industrielle</span>' avec 9 marqueurs d'influence")}
+                        ${renderSetupDetail(5, "", "Bâtiment '<span class='text-fragile-red font-bold'>Grossiste</span>' avec 4 palettes de 4 emplacements")}
+                        ${renderSetupDetail(6, "", "Emplacement pour le dé '<span class='text-fragile-red font-bold'>Prix Essence</span>'")}
+                        ${renderSetupDetail(7, "", "Bâtiment '<span class='text-fragile-red font-bold'>Banque</span>' avec 2 emplacements pour cartes")} 
                     </div>
 
                     <p class="mt-10 text-sm text-gray-600 leading-relaxed">
@@ -358,7 +358,7 @@ transformer la contrainte en opportunité.
                 <div class="space-y-10">
                     <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Cartes des Commandes</h2>
                     
-                    <div class="flex justify-center items-center">
+                    <div class="flex justify-left items-center">
                         <img src="images/materiel/commandes.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
                             <i data-lucide="map" class="w-16 h-16 mb-2"></i>
@@ -367,10 +367,10 @@ transformer la contrainte en opportunité.
                     </div>
 
                     <div class="space-y-2">
-                        ${renderSetupDetail(1, "", "Pioche des cartes 'Commande 1 Colis'")}
-                        ${renderSetupDetail(2, "", "Pioche des cartes 'Commande 2 Colis'")}
-                        ${renderSetupDetail(3, "", "Carte 'Commande 1 Colis' face visible")}
-                        ${renderSetupDetail(4, "", "Carte 'Commande 2 Colis' face visible")}
+                        ${renderSetupDetail(1, "", "Pioche des cartes '<span class='text-fragile-red font-bold'>Commande 1 Colis</span>'")}
+                        ${renderSetupDetail(2, "", "Pioche des cartes '<span class='text-fragile-red font-bold'>Commande 2 Colis</span>'")}
+                        ${renderSetupDetail(3, "", "Carte '<span class='text-fragile-red font-bold'>Commande 1 Colis</span>' face visible")}
+                        ${renderSetupDetail(4, "", "Carte '<span class='text-fragile-red font-bold'>Commande 2 Colis</span>' face visible")}
                         ${renderSetupDetail(5, "", "Couleur(s) du ou des colis de la commande")}
                         ${renderSetupDetail(6, "", "Gain de la livraison des colis de la carte")}
                         ${renderSetupDetail(7, "", "Malus fin de partie si la commande est chargée mais non livrée")} 
@@ -386,7 +386,7 @@ transformer la contrainte en opportunité.
                 <div class="space-y-10">
                     <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Cartes 'Banque''</h2>
                     
-                    <div class="flex justify-center items-center">
+                    <div class="flex justify-left items-center">
                         <img src="images/materiel/banque.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
                             <i data-lucide="map" class="w-16 h-16 mb-2"></i>
@@ -418,7 +418,7 @@ transformer la contrainte en opportunité.
                 <div class="space-y-10">
                     <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Cartes 'Camions''</h2>
                     
-                    <div class="flex justify-center items-center">
+                    <div class="flex justify-left items-center">
                         <img src="images/materiel/camions.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
                             <i data-lucide="map" class="w-16 h-16 mb-2"></i>
@@ -454,45 +454,45 @@ transformer la contrainte en opportunité.
                         Chaque joueur place devant lui:
                     </p>
                     <div class="space-y-2">
-                        ${renderSetupDetail(1, "", "1 plateau 'Entrepôt'")}
-                        ${renderSetupDetail(2, "", "12 cubes 'Joueur' de sa couleur (marque des livraisons)")}
+                        ${renderSetupDetail(1, "", "1 plateau '<span class='text-fragile-red font-bold'>Entrepôt</span>'")}
+                        ${renderSetupDetail(2, "", "12 cubes '<span class='text-fragile-red font-bold'>Joueur</span>' de sa couleur (marque des livraisons)")}
                         ${renderSetupDetail(3, "", "Une trésorerie de 80 Péz (3x10 + 5x5 + 5x3 + 10x1)")}
                    </div>
                     <p class="mt-10 text-lg text-gray-600 leading-relaxed">
                         Positionner au centre de la table:
                     </p>
                     <div class="space-y-2">
-                        ${renderSetupDetail(4, "", "Le plateau 'Ville'")}
-                        ${renderSetupDetail(5, "", "Poser le dé 'Prix Essence' chez le grossiste")}
-                        ${renderSetupDetail(6, "", "Faire 2 pioches des 4 cartes 'Banque' et les poser faces visibles dans la banque")}
+                        ${renderSetupDetail(4, "", "Le plateau '<span class='text-fragile-red font-bold'>Ville</span>'")}
+                        ${renderSetupDetail(5, "", "Poser le dé '<span class='text-fragile-red font-bold'>Prix Essence</span>' chez le grossiste")}
+                        ${renderSetupDetail(6, "", "Faire 2 pioches des 4 cartes '<span class='text-fragile-red font-bold'>Banque</span>' et les poser faces visibles dans la banque")}
                         ${renderSetupDetail(7, "", "Poser le panneau d'aide de l'influence des quartiers + tarifs")}
                    </div>
                     <p class="mt-10 text-lg text-gray-600 leading-relaxed">
                         A droite du plateau, positionner:
                     </p>
                     <div class="space-y-2">
-                        ${renderSetupDetail(8, "", "Les 4 cartes 'Camion Bleu' et les 8 cartes 'Camion Blanc'")}
-                        ${renderSetupDetail(9, "", "Les 4 cubes 'Sécurité'")}
-                        ${renderSetupDetail(10, "", "La pioche des commandes avec: une pioche des cartes 'Commande 1 Colis' + 1 carte face visible et une pioche des cartes 'Commande 2 Colis' + 1 carte face visible")}
+                        ${renderSetupDetail(8, "", "Les 4 cartes '<span class='text-fragile-red font-bold'>Camion Bleu</span>' et les 8 cartes '<span class='text-fragile-red font-bold'>Camion Blanc</span>'")}
+                        ${renderSetupDetail(9, "", "Les 4 cubes '<span class='text-fragile-red font-bold'>Sécurité</span>'")}
+                        ${renderSetupDetail(10, "", "La pioche des commandes avec: une pioche des cartes '<span class='text-fragile-red font-bold'>Commande 1 Colis</span>' + 1 carte face visible et une pioche des cartes '<span class='text-fragile-red font-bold'>Commande 2 Colis</span>' + 1 carte face visible")}
                    </div>                
                     <p class="mt-10 text-lg text-gray-600 leading-relaxed">
                         A gauche du plateau, positionner:
                     </p>
                     <div class="space-y-2">
-                        ${renderSetupDetail(11, "", "Les plaques 'Flamme', 'Flash' et 'Chantier'")}
-                        ${renderSetupDetail(12, "", "La roue des étapes et les 2 dés 'Evènements'")}
-                        ${renderSetupDetail(13, "", "Les 10 cubes 'Banque'")}
-                        ${renderSetupDetail(14, "", "Les cubes 'Scanneur', 'Volant' et 'Bidon Essence'")}
+                        ${renderSetupDetail(11, "", "Les plaques '<span class='text-fragile-red font-bold'>Flamme</span>', '<span class='text-fragile-red font-bold'>Flash</span>' et '<span class='text-fragile-red font-bold'>Chantier</span>'")}
+                        ${renderSetupDetail(12, "", "La roue des étapes et les 2 dés '<span class='text-fragile-red font-bold'>Evènements</span>>")}
+                        ${renderSetupDetail(13, "", "Les 10 cubes '<span class='text-fragile-red font-bold'>Banque</span>'")}
+                        ${renderSetupDetail(14, "", "Les cubes '<span class='text-fragile-red font-bold'>Scanneur</span>', '<span class='text-fragile-red font-bold'>Volant</span>' et '<span class='text-fragile-red font-bold'>Bidon Essence</span>'")}
                         ${renderSetupDetail(15, "", "La trésorerie des pièces de 10 Péz, 5 Péz, 3 Péz et 1 Péz")}
                    </div>                
                     <div class="bg-red-50 p-8 rounded-3xl border border-red-100">
                         <h3 class="text-xl font-black uppercase italic mb-4 text-fragile-red">Structure d'un tour de jeu</h3>
                         <ul class="list-disc ml-6 space-y-2 text-gray-700">
-                            <li>En début de partie, tirer au sort le joueur qui possédera le cube 'Premier Joueur' pour le 1er tour.</li>
-                            <li>Puis chaque joueur positionne un cube 'Joueur' de sa couleur sur la case 'Start' (icone 'Camion') du marqueur du nombre de livraisons de son plateau 'Entrepôt'.</li>
+                            <li>En début de partie, tirer au sort le joueur qui possédera le cube '<span class='text-fragile-red font-bold'>Premier Joueur</span>' pour le 1er tour.</li>
+                            <li>Puis chaque joueur positionne un cube '<span class='text-fragile-red font-bold'>Joueur</span>' de sa couleur sur la case '<span class='text-fragile-red font-bold'>Start</span>' (icone '<span class='text-fragile-red font-bold'>Camion</span>') du marqueur du nombre de livraisons de son plateau '<span class='text-fragile-red font-bold'>Entrepôt</span>'.</li>
                             <li>Une partie de joue avec des tours de 6 étapes qui sont symbolisées sur la roue.</li>
                             <li>La flèche permet d'indiquer l'étape en cours et elle est positionnée au départ sur l'étape 1.</li>
-                            <li>C'est le joueur possédant le cube 'Premier Joueur' qui est en charge de déplacer la flèche pour indiquer le changement d'étape.</li>
+                            <li>C'est le joueur possédant le cube '<span class='text-fragile-red font-bold'>Premier Joueur</span>' qui est en charge de déplacer la flèche pour indiquer le changement d'étape.</li>
                         </ul>
                     </div>
                     <div class="flex justify-center items-center">
@@ -513,7 +513,7 @@ transformer la contrainte en opportunité.
                     t: "Achat de Lots", 
                     content: [
                         { type: 'p', text: "Cette étape est obligatoire." },
-                        { type: 'p', text: "Dans le sac des colis, tirer au sort des lots de 4 colis et positionner chaque lot sur une palette du plateau 'Grossiste'. Il faut un lot par joueur." },
+                        { type: 'p', text: "Dans le sac des colis, tirer au sort des lots de 4 colis et positionner chaque lot sur une palette du plateau '<span class='text-fragile-red font-bold'>Grossiste</span>'. Il faut un lot par joueur." },
                         { type: 'p', text: "Le joueur possédant le cube 'Premier Joueur' achète 3 colis du lot de son choix. Le colis restant est remis dans le sac des colis. Le prix du lot est calculé en fonction de la couleur des colis qui le compose:." },
                         { type: 'list', items: [
                             "4 Péz pour un colis bleu",
@@ -522,7 +522,7 @@ transformer la contrainte en opportunité.
                         ]},
                         { type: 'p', text: "Ensuite il doit les positionner dans son entrepôt en respectant les règles suivantes:" },
                         { type: 'list', items: [
-                            "Un colis bleu est obligatoirement positionné sur une case bleuu.",
+                            "Un colis bleu est obligatoirement positionné sur une case bleu.",
                             "Une case bleue ne peut contenir qu'un colis bleu.",
                             "Un colis rouge, vert, rose ou jaune est donc positionné sur une case blanche.",
                             "2 colis d'une même couleur sont obligatoirement positionnés cote à cote:"
@@ -531,34 +531,50 @@ transformer la contrainte en opportunité.
                         { type: 'list', items: [
                             "2 colis d'une couleur différente ne peuvent pas être cote à cote:"
                         ]},
-                        { type: 'image', src: "images/rules/step1-figure1.png"},
+                        { type: 'image', src: "images/rules/step1-figure2.png"},
                         { type: 'p', text: "Si le joueur est dans l'impossibilité de positioner un (ou plusieurs) colis dans son entrepôt:" },
                         { type: 'list', items: [
                             "Il peut une seule fois par tour retirer un colis qui le gêne pour placer un nouveau colis.",
                             "Le ou les colis qui n'ont pas pu être placés dans l'entrepôt sont remis dans le sac des colis avec une taxe de recyclage de 1 Péz par colis."
                         ]},
+                        { type: 'p', text: "Dans cet exemple, le joueur doit ajouter un colis vert. Il peut retirer un des 2 colis roses adjacents, mais pas le 3ème colis rose ni le colis jaune." },
+                        { type: 'image', src: "images/rules/step1-figure3.png"},
+                        { type: 'p', text: "<span class='text-fragile-red font-bold'>Attention, les règles de placement doivent être respectées pour le colis retiré.<br>Exemple: pour placer un colis vert, le joueur ne peut pas retirer le colis rose avec la croix rouge car les 2 colis roses restants ne seraient pas cote à cote.</span>" },
+                        { type: 'image', src: "images/rules/step1-figure4.png"},
+                        { type: 'p', text: "Puis c'est au tour du joueur suivant (dans le sens des aiguilles d'une montre).<br>Lorsque le dernier joueur a effectué son tour, on passe à l'étape suivante." }
                     ]
                 },
                 {
                     id: 2, 
-                    t: "Organisation & Stockage", 
+                    t: "Sélection d'une carte Commande", 
                     content: [
-                        { type: 'p', text: "Il s'agit de la phase la plus délicate du jeu. Vous devez organiser vos palettes dans votre entrepôt personnel." },
-                        { type: 'p', text: "Les règles de sécurité logistique s'appliquent strictement :" },
+                        { type: 'p', text: "Cette étape est obligatoire." },
+                        { type: 'p', text: "Le joueur possédant le cube '<span class='text-fragile-red font-bold'>Premier Joueur</span>' prend une commande dans la pioche." },
                         { type: 'list', items: [
-                            "Respectez la limite de charge (10 points max par case).",
-                            "Respectez la hiérarchie des poids (Lourd en bas, Moyen au milieu, Léger en haut).",
-                            "L'usage des palettes de séparation est obligatoire pour empiler des marchandises lourdes sur des produits fragiles."
-                        ]}
+                            "Soit la carte '<span class='text-fragile-red font-bold'>Commande 1 Colis</span>' visible.<br>Dans ce cas, il la remplace par la première carte de la pioche des cartes '<span class='text-fragile-red font-bold'>Commande 1 Colis'.</span>",
+                            "Soit en prenant la première carte sur la pioche des cartes '<span class='text-fragile-red font-bold'>Commande 1 Colis</span>'.",
+                            "Soit la carte '<span class='text-fragile-red font-bold'>Commande 2 Colis</span>' visible.<br>Dans ce cas, il la remplace par la première carte de la pioche des cartes '<span class='text-fragile-red font-bold'>Commande 2 Colis</span>'.",
+                            "Soit en prenant la première carte sur la pioche des cartes '<span class='text-fragile-red font-bold'>Commande 2 Colis</span>'.",
+                        ]},
+                        { type: 'p', text: "Le joueur positionne la carte dans un des 4 emplacements de l'entrepôt de manière à ce que l'icône '<span class='text-fragile-red font-bold'>En attente</span>' soit visible." },
+                        { type: 'image', src: "images/rules/step2-figure1.png"},
+                        { type: 'p', text: "Si le joueur a déjà 4 cartes commandes dans la zone de l'entrepôt:" },
+                        { type: 'list', items: [
+                            "Soit il choisit de libérer une place en sacrifiant une carte commande qu'il place dans la zone '<span class='text-fragile-red font-bold'>Commandes annulées</span>'.<br>Attention, en fin de partie le malus affiché sur la carte sera déduit du score du joueur.",
+                            "Soit il ne prend pas une nouvelle carte commande."
+                        ]},
+                        { type: 'p', text: "Puis c'est au tour du joueur suivant (dans le sens des aiguilles d'une montre).<br>Lorsque le dernier joueur a effectué son tour, on passe à l'étape suivante." }
                     ]
                 },
                 {
                     id: 3, 
-                    t: "Chargement", 
+                    t: "Transactions Financières", 
                     content: [
-                        { type: 'p', text: "Préparez vos camions en fonction des commandes que vous avez acceptées." },
+                        { type: 'p', text: "Cette étape est facultative." },
+                        { type: 'p', text: "Le joueur avec le cube 'Premier Joueur' lance le dé 'Prix Essence' puis le pose dans la zone du grossiste. Cela définit le prix pour tous les joueurs pour ce tour." },
+                        { type: 'p', text: "A chaque tour, chaque joueur peut effectuer au maximum 2 transactions financière parmi les suivantes:" },
                         { type: 'list', items: [
-                            "Dépensez 1 cube Scanneur (Logistique) par palette déplacée de l'entrepôt vers un camion.",
+                            "Achat d'un ou plusieurs jetons 'Volant' avec un tarif défressif.",
                             "Un camion ne peut quitter l'entrepôt que si sa commande est intégralement chargée."
                         ]}
                     ]
@@ -593,10 +609,10 @@ transformer la contrainte en opportunité.
                 // Génération dynamique du contenu HTML selon le type (p, list ou image)
                 const contentHtml = p.content.map(block => {
                     if (block.type === 'p') {
-                        return `<p class="text-gray-700 italic font-medium leading-relaxed">${block.text}</p>`;
+                        return `<p class="text-gray-700 font-medium leading-relaxed">${block.text}</p>`;
                     } else if (block.type === 'list') {
                         return `
-                            <ul class="list-disc ml-6 space-y-2 text-gray-600 text-sm">
+                            <ul class="list-disc ml-6 space-y-2 text-gray-700 font-medium">
                                 ${block.items.map(li => `<li>${li}</li>`).join('')}
                             </ul>
                         `;
