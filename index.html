@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRAGILE - Livret de Règles Officiel</title>
+    <link rel="icon" type="image/svg+xml" href="images/truck.svg">
     <!-- Tailwind CSS pour le style et le responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -223,7 +224,7 @@
         function renderIntro(container) {
             container.innerHTML = `
                 <div class="space-y-8">
-                    <div class="flex justify-center items-center">
+                    <div class="flex justify-left items-center">
                         <img src="images/fragile-cover.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
                             <i data-lucide="map" class="w-16 h-16 mb-2"></i>
@@ -240,13 +241,12 @@ chaque décision se répercute sur votre trésorerie.</p>
                         </div>
                         <p class="mt-10 text-lg text-gray-600 leading-relaxed">
                             En tant que chef d'entreprise, vous devrez jongler entre l'acquisition de lots de marchandises,
-l'organisation millimétrée de votre entrepôt et l'urgence des livraisons. Mais dans ce métier, l'équilibre est précaire : entre les contraintes strictes des produits sensibles, les
-exigences des différents quartiers de la ville et les imprévus qui menancent votre activité, la moindre
-erreur peut fragiliser votre bilan financier.
+l'organisation millimétrée de votre entrepôt et l'urgence des livraisons.<br>Mais dans ce métier, l'équilibre est précaire : entre les contraintes strictes des produits sensibles, les
+exigences des différents quartiers de la ville et les imprévus qui menancent votre activité, la moindre erreur peut fragiliser votre bilan financier.
                         </p>
                         <p class="mt-10 text-lg text-gray-600 leading-relaxed">
                             Saurez-vous dompter vos dettes et surmonter les crises pour bâtir la société de transport la plus
-prospère? Dans ce défi stratégique, la victoire appartient au gestionnaire le plus rigoureux, celui qui saura
+prospère?<br>Dans ce défi stratégique, la victoire appartient au gestionnaire le plus rigoureux, celui qui saura
 transformer la contrainte en opportunité. 
                         </p>
                     </div>
@@ -556,7 +556,7 @@ transformer la contrainte en opportunité.
                             "Soit la carte '<span class='text-fragile-red font-bold'>Commande 2 Colis</span>' visible.<br>Dans ce cas, il la remplace par la première carte de la pioche des cartes '<span class='text-fragile-red font-bold'>Commande 2 Colis</span>'.",
                             "Soit en prenant la première carte sur la pioche des cartes '<span class='text-fragile-red font-bold'>Commande 2 Colis</span>'.",
                         ]},
-                        { type: 'p', text: "Le joueur positionne la carte dans un des 4 emplacements de l'entrepôt de manière à ce que l'icône '<span class='text-fragile-red font-bold'>En attente</span>' soit visible." },
+                        { type: 'p', text: "Le joueur positionne la carte dans un des 4 emplacements de l'entrepôt de manière à ce que l'icône '<span class='text-fragile-red font-bold'>En attente</span>' <i data-lucide='timer' class='inline-block w-5 h-5'></i> soit visible." },
                         { type: 'image', src: "images/rules/step2-figure1.png"},
                         { type: 'p', text: "Si le joueur a déjà 4 cartes commandes dans la zone de l'entrepôt:" },
                         { type: 'list', items: [
@@ -574,8 +574,13 @@ transformer la contrainte en opportunité.
                         { type: 'p', text: "Le joueur avec le cube 'Premier Joueur' lance le dé 'Prix Essence' puis le pose dans la zone du grossiste. Cela définit le prix pour tous les joueurs pour ce tour." },
                         { type: 'p', text: "A chaque tour, chaque joueur peut effectuer au maximum 2 transactions financière parmi les suivantes:" },
                         { type: 'list', items: [
-                            "Achat d'un ou plusieurs jetons 'Volant' avec un tarif défressif.",
-                            "Un camion ne peut quitter l'entrepôt que si sa commande est intégralement chargée."
+                            "Respectez la limite de charge (10 points max par case).",
+                            { text: "Règles d'empilement (La Pyramide) :", subItems: [
+                                "Niveau 1 : Tous poids autorisés.",
+                                "Niveau 2 : Uniquement Léger ou Moyen.",
+                                "Niveau 3 : Uniquement Léger."
+                            ]},
+                            "L'usage des palettes est obligatoire pour isoler les marchandises fragiles."
                         ]}
                     ]
                 },
@@ -606,26 +611,31 @@ transformer la contrainte en opportunité.
             ];
 
             let cards = phases.map(p => {
-                // Génération dynamique du contenu HTML selon le type (p, list ou image)
                 const contentHtml = p.content.map(block => {
                     if (block.type === 'p') {
                         return `<p class="text-gray-700 font-medium leading-relaxed">${block.text}</p>`;
                     } else if (block.type === 'list') {
                         return `
-                            <ul class="list-disc ml-6 space-y-2 text-gray-700 font-medium">
-                                ${block.items.map(li => `<li>${li}</li>`).join('')}
+                            <ul class="list-disc ml-6 space-y-3 text-gray-700 font-medium">
+                                ${block.items.map(li => {
+                                    if (typeof li === 'object') {
+                                        return `
+                                            <li>
+                                                <span class="font-medium text-gray-700">${li.text}</span>
+                                                <ul class="list-[circle] ml-6 mt-2 space-y-1 text-gray-700 font-medium">
+                                                    ${li.subItems.map(sub => `<li>${sub}</li>`).join('')}
+                                                </ul>
+                                            </li>`;
+                                    }
+                                    return `<li>${li}</li>`;
+                                }).join('')}
                             </ul>
                         `;
                     } else if (block.type === 'image') {
                         return `
-                            <div class="flex justify-left ">
-                                <img 
-                                    src="${block.src}" 
-                                    alt="Illustration étape" 
-                                    class="max-w-full h-auto block select-none"
-                                    onerror="this.parentElement.style.display='none'"
-                                >
-                            </div>
+                            <div class="flex justify-left  overflow-hidden my-4">
+                                <img src="${block.src}" alt="Illustration" class="max-w-full h-auto block select-none" onerror="this.parentElement.style.display='none'">
+                            </div>  
                         `;
                     }
                     return '';
