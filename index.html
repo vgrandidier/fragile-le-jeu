@@ -23,6 +23,24 @@
         .text-fragile-red { color: var(--fragile-red); }
         .border-fragile-red { border-color: var(--fragile-red); }
 
+        .conteneur {
+            display: flex;
+            align-items: center; /* Aligne verticalement au centre */
+            gap: 10px; /* Espace entre le cercle et le texte */
+        }
+        .cercle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #111111;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
         .sidebar-transition {
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -102,23 +120,26 @@
                 <button onclick="loadPage('setup')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="setup">
                     <i data-lucide="settings" class="w-5 h-5"></i> Mise en place
                 </button>
+                <button onclick="loadPage('modeinfluence')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="modeinfluence">
+                    <i data-lucide="timer-reset" class="w-5 h-5"></i> Tour de jeu
+                </button>
+                <button onclick="loadPage('endgame')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="endgame">
+                    <i data-lucide="trophy" class="w-5 h-5"></i> Fin de partie
+                </button>
                 <button onclick="loadPage('modesolo')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="modesolo">
                     <i data-lucide="user" class="w-5 h-5"></i> Mode Solo
                 </button>
                 <button onclick="loadPage('modeduel')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="modeduel">
                     <i data-lucide="swords" class="w-5 h-5"></i> Mode Duel (2J)
                 </button>
-                <button onclick="loadPage('modeinfluence')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="modeinfluence">
-                    <i data-lucide="map-pinned" class="w-5 h-5"></i> Mode Influence
-                </button>
                 <button onclick="loadPage('modecollab')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="modecollab">
                     <i data-lucide="handshake" class="w-5 h-5"></i> Mode Collaboration
                 </button>
                 <button onclick="loadPage('questionnaire')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="questionnaire">
-                    <i data-lucide="message-square" class="w-5 h-5"></i> Questionnaire
+                    <i data-lucide="message-circle-question-mark" class="w-5 h-5"></i> Questionnaire
                 </button>
                 <button onclick="loadPage('media')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="media">
-                    <i data-lucide="image" class="w-5 h-5"></i> Médias & Ressources
+                    <i data-lucide="presentation" class="w-5 h-5"></i> Médias & Ressources
                 </button>
             </nav>
 
@@ -171,14 +192,15 @@
 
             switch(pageId) {
                 case 'intro': renderIntro(container); break;
-                case 'galerie': renderGalerie(container); break;
                 case 'materiel': renderMateriel(container); break;
                 case 'setup': renderSetup(container); break;
+                case 'modeinfluence': renderModeInfluence(container); break;
+                case 'endgame': renderEndGame(container); break;
                 case 'modesolo': renderModeSolo(container); break;
                 case 'modeduel': renderModeDuel(container); break;
-                case 'modeinfluence': renderModeInfluence(container); break;
                 case 'modecollab': renderModeCollab(container); break;
                 case 'questionnaire': renderQuestionnaire(container); break;
+                case 'media': renderGalerie(container); break;
             }
 
             if(window.innerWidth < 768) toggleSidebar(false);
@@ -407,12 +429,24 @@ transformer la contrainte en opportunité.
         function renderBankTab(container) {
             container.innerHTML = `
                 <div class="space-y-10">
+                    <p class="mt-10 font-medium text-gray-600 leading-relaxed">
+                        Si un joueur manque de trésorerie, il peut faire un emprunt auprès d'une banque.<br>Cette action est possible à n'importe quelle étape d'un tour et ne compte pas comme une trasaction financière à l'étape 3.
+                    </p>
+
+                    <p class="mt-10 font-medium text-gray-600 leading-relaxed">
+                        <ul>
+                            <li>Le joueur prend une des 2 cartes disponibles dans la banque (la carte du dessous est alors dévoilée)</li>
+                            <li>Il la positionne à coté de son entrepôt et place un cube '<span class='text-fragile-red font-bold'>Banque</span>' de la même couleur que la carte sur la case la plus à gauche (montant à rembourser).</li>
+                            <li>Il récupère la somme indiquée à droite du banquier</li>
+                        </ul>
+                    </p>
+
+                    <p class="mt-10 font-medium text-gray-600 leading-relaxed">
+                        Le joueur peut effectuer un remboursement partiel ou complet à n'importe quelle étape d'un tour.
+                    </p>
+
                     <div class="flex justify-left items-center">
                         <img src="images/materiel/banque.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
-                            <i data-lucide="map" class="w-16 h-16 mb-2"></i>
-                            <span class="font-black uppercase italic text-center text-sm">[Image : Cartes 'Banque']</span>
-                        </div>
                     </div>
 
                     <div class="space-y-2">
@@ -693,7 +727,7 @@ transformer la contrainte en opportunité.
                         { type: 'p', text: "Le chargement du ou des colis dans un camion n'est possible que si le joueur possède en stock un cube '<span class='text-fragile-red font-bold'>Scanneur</span>': il faut 1 cube pour chaque carte commande chargée." },
                         { type: 'p', text: "Lorsqu'une commande est chargée:" },
                         { type: 'list', items: [
-                            "Le joueur est défaussé d'un cube 'Scanneur' qui est mis dans la réserver.",
+                            "Le joueur est défaussé d'un cube '<span class='text-fragile-red font-bold'>Scanneur</span>' qui est mis dans la réserver.",
                             "Dans la zone de l'entrepôt, la carte commande est déplacée vers le haut pour afficher l'icône '<span class='text-fragile-red font-bold'>Validée</span>' <i data-lucide='circle-check' class='inline-block w-5 h-5'></i>"
                         ]},
                         { type: 'image', src: "images/rules/step4-figure2.png"},
@@ -704,13 +738,61 @@ transformer la contrainte en opportunité.
                     id: 5, 
                     t: "Livraison / Retour Camion", 
                     content: [
-                        { type: 'p', text: "Le tour se termine par une phase administrative obligatoire." },
+                        { type: 'p', text: "Cette étape est facultative." },
+                        { type: 'p', text: "Si un camion était en livraison (voir ci-dessous), alors la carte est retournée et le camion est de nouveau disponible." },
+                        { type: 'image', src: "images/rules/step5-figure1.png"},
                         { type: 'list', items: [
-                            "Frais de stockage : payez 1 Péz par lot non livré resté dans votre entrepôt.",
-                            "Récupérez tous vos cubes de ressources utilisés.",
-                            "Piochez une carte Évènement et appliquez ses effets immédiatement ou pour le tour suivant selon le texte."
-                        ]}
-                    ]
+                            { text: "Une livraison est possible si:", subItems: [
+                                "3 colis ont été chargés sur le camion.",
+                                "1 cube '<span class='text-fragile-red font-bold'>Volant</span>' est positionné sur le camion.",
+                                "1 cube '<span class='text-fragile-red font-bold'>Bidon Essence</span>' est disponible dans l'entrepôt."
+                            ]},
+                        ]},
+                        { type: 'info', text: "Il n'est pas possible de déplacer un cube '<span class='text-fragile-red font-bold'>Volant</span>' d'un camion vers un autre." },
+                        { type: 'p', text: "Une livraison est complétée avec les actions suivantes:" },
+                        { type: 'p', text: "<div class='conteneur'><div class='cercle'>1</div><span>Le joueur est défaussé du cube '<span class='text-fragile-red font-bold'>Volant</span>' et d'un cube '<span class='text-fragile-red font-bold'>Bidon Essence</span>' qui sont mis dans la réserve.</span></div>" },
+                        { type: 'p', text: "<div class='conteneur'><div class='cercle'>2</div><span>Le joueur reçoit en Péz la somme des gains des cartes correspondant aux colis chargés sur le camion.</span></div>" },
+                        { type: 'p', text: "<div class='conteneur'><div class='cercle'>3</div><span>Ces cartes sont sorties de la zone de l'entrepôt et poser hors de la zone de jeu.</span></div>" },
+                        { type: 'p', text: "<div class='conteneur'><div class='cercle'>4</div><span>Le joueur peut alors poser un ou plusieurs cubes '<span class='text-fragile-red font-bold'>Joueur</span>' de sa couleur pour marquer son influence dans un quartier de la ville en fonction des colis qui composent la commande livrée.</span></div>" },
+                        { type: 'list', items: [
+                            { text: "Zone Résidentielle:", subItems: [
+                                "<span class='italic'>Condition d'accès</span> = Aucune",
+                                "<span class='italic'>Influence</span> = 1 cube qu'elle que soit la livraison",
+                                "<span class='italic'>Bonus immédiat</span> = 1 cube '<span class='text-fragile-red font-bold'>Bidon Essence</span>'.",
+                                "<span class='italic'>Gain fin de partie</span> = <b>10 Péz</b> pour le 1er rang et <b>5 Péz</b> pour le 2ème rang."
+                            ]},
+                        ]}, 
+                        { type: 'list', items: [
+                            { text: "Centre Ville:", subItems: [
+                                "<span class='italic'>Condition d'accès</span> = Au moins 1 colis jaune OU au moins 1 colis rose",
+                                "<span class='italic'>Influence</span> = 1 ou 2 colis requis = 1 cube OU 3 colis requis = 2 cubes",
+                                "<span class='italic'>Bonus immédiat</span> = Aucun.",
+                                "<span class='italic'>Gain fin de partie</span> = <b>15 Péz</b> pour le 1er rang et <b>8 Péz</b> pour le 2ème rang."
+                            ]},
+                        ]},                
+                        { type: 'list', items: [
+                            { text: "Centre Commercial:", subItems: [
+                                "<span class='italic'>Condition d'accès</span> = Au moins 1 colis vert OU 3 colis bleus",
+                                "<span class='italic'>Influence</span> = 1, 2 ou 3 colis verts = 1 cube OU 3 colis bleus = 2 cubes",
+                                "<span class='italic'>Bonus immédiat</span> = Aucun.",
+                                "<span class='italic'>Gain fin de partie</span> = <b>20 Péz</b> pour le 1er rang et <b>10 Péz</b> pour le 2ème rang."
+                            ]},
+                        ]},                
+                        { type: 'list', items: [
+                            { text: "Zone Industrielle:", subItems: [
+                                "<span class='italic'>Condition d'accès</span> = Au moins 1 colis rouge",
+                                "<span class='italic'>Influence</span> = 1 colis rouge = 1 cube OU 3 colis rouges = 2 cubes",
+                                "<span class='italic'>Bonus immédiat</span> = Aucun.",
+                                "<span class='italic'>Gain fin de partie</span> = <b>25 Péz</b> pour le 1er rang et <b>15 Péz</b> pour le 2ème rang."
+                            ]},
+                        ]},             
+                        { type: 'p', text: "<div class='conteneur'><div class='cercle'>5</div><span>Puis les colis chargés sur le camion sont remis dans le sac des colis.</span></div>" },
+                        { type: 'p', text: "<div class='conteneur'><div class='cercle'>6</div><span>La carte du camion est retournée pour symboliser qu'il est en livraison et il ne sera pas disponible pour la prochaine étape de chargement.</span></div>" },
+                        { type: 'p', text: "<div class='conteneur'><div class='cercle'>7</div><span>Le cube 'Camion' du joueur est avancé d'une case sur le marqueur de score de son entrepôt.</span></div>" },
+                        { type: 'p', text: "Le joueur qui possède le cube 'Premier Joueur' effectue ses livraisons (si disponibles)." },
+                        { type: 'p', text: "Puis c'est au tour du joueur suivant (dans le sens des aiguilles d'une montre)." },
+                        { type: 'p', text: "Lorsque le " },
+                      ]
                 },
                 {
                     id: 6, 
@@ -787,8 +869,8 @@ transformer la contrainte en opportunité.
             container.innerHTML = `
                 <div class="space-y-10">
                     <div class="flex items-center gap-6 border-b-8 border-fragile-red pb-6">
-                        <div class="bg-fragile-red text-white p-4 rounded-3xl shadow-lg rotate-3"><i data-lucide="map-pinned" class="w-12 h-12"></i></div>
-                        <h2 class="text-5xl font-black uppercase italic tracking-tighter">Mode Influence</h2>
+                        <div class="bg-fragile-red text-white p-4 rounded-3xl shadow-lg rotate-3"><i data-lucide="timer-reset" class="w-12 h-12"></i></div>
+                        <h2 class="text-5xl font-black uppercase italic tracking-tighter">Tour de jeu</h2>
                     </div>
                     <div class="grid gap-4">${cards}</div>
                 </div>
@@ -812,15 +894,22 @@ transformer la contrainte en opportunité.
                 </div>`;
         }
 
-        function renderFin(container) {
-            container.innerHTML = `<div class="space-y-10"><h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Bilan Final</h2><div class="bg-gray-900 text-white p-12 rounded-[4rem]">Score = Trésorerie - Dettes.</div></div>`;
+        function renderEndGame(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <div class="flex items-center gap-6 border-b-8 border-fragile-red pb-6">
+                        <div class="bg-fragile-red text-white p-4 rounded-3xl shadow-lg rotate-3"><i data-lucide="trophy" class="w-12 h-12"></i></div>
+                        <h2 class="text-5xl font-black uppercase italic tracking-tighter">Fin de Partie</h2>
+                    </div>
+                <div class="bg-gray-900 text-white p-12 rounded-[4rem]">Score = Trésorerie - Dettes.</div>
+            </div>`;
         }
 
         function renderQuestionnaire(container) {
             container.innerHTML = `
                 <div class="space-y-10">
                     <div class="flex items-center gap-6 border-b-8 border-fragile-red pb-6">
-                        <div class="bg-fragile-red text-white p-4 rounded-3xl shadow-lg rotate-3"><i data-lucide="message-square" class="w-12 h-12"></i></div>
+                        <div class="bg-fragile-red text-white p-4 rounded-3xl shadow-lg rotate-3"><i data-lucide="message-circle-question-mark" class="w-12 h-12"></i></div>
                         <h2 class="text-5xl font-black uppercase italic tracking-tighter">Questionnaire</h2>
                     </div>
                 <div class="bg-white p-12 rounded-[3.5rem] border-4 border-gray-900 shadow-2xl">
