@@ -131,9 +131,6 @@
                 <button onclick="loadPage('tour')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="tour">
                     <i data-lucide="rotate-cw" class="w-5 h-5"></i> Tour de Jeu
                 </button>
-                <button onclick="loadPage('stockage')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="stockage">
-                    <i data-lucide="layers" class="w-5 h-5"></i> Stockage
-                </button>
                 <button onclick="loadPage('fin')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="fin">
                     <i data-lucide="trophy" class="w-5 h-5"></i> Fin de partie
                 </button>
@@ -539,8 +536,7 @@ transformer la contrainte en opportunité.
                         ]},
                         { type: 'p', text: "Dans cet exemple, le joueur doit ajouter un colis vert. Il peut retirer un des 2 colis roses adjacents, mais pas le 3ème colis rose ni le colis jaune." },
                         { type: 'image', src: "images/rules/step1-figure3.png"},
-                        { type: 'p', text: "<span class='text-fragile-red font-bold'>Attention, les règles de placement doivent être respectées pour le colis retiré.<br>Exemple: pour placer un colis vert, le joueur ne peut pas retirer le colis rose avec la croix rouge car les 2 colis roses restants ne seraient pas cote à cote.</span>" },
-                        { type: 'image', src: "images/rules/step1-figure4.png"},
+                        { type: 'info', text: "Attention, les règles de placement doivent être respectées pour le colis retiré.<br>Exemple: pour placer un colis vert, le joueur ne peut pas retirer le colis rose avec la croix rouge car les 2 colis roses restants ne seraient pas cote à cote.", image: 'images/rules/step1-figure4.png' },
                         { type: 'p', text: "Puis c'est au tour du joueur suivant (dans le sens des aiguilles d'une montre).<br>Lorsque le dernier joueur a effectué son tour, on passe à l'étape suivante." }
                     ]
                 },
@@ -571,34 +567,93 @@ transformer la contrainte en opportunité.
                     t: "Transactions Financières", 
                     content: [
                         { type: 'p', text: "Cette étape est facultative." },
-                        { type: 'p', text: "Le joueur avec le cube 'Premier Joueur' lance le dé 'Prix Essence' puis le pose dans la zone du grossiste. Cela définit le prix pour tous les joueurs pour ce tour." },
+                        { type: 'p', text: "Le joueur avec le cube '<span class='text-fragile-red font-bold'>Premier Joueur</span>' lance le dé '<span class='text-fragile-red font-bold'>Prix Essence</span>' puis le pose dans la zone du grossiste. Cela définit le prix pour tous les joueurs pour ce tour." },
                         { type: 'p', text: "A chaque tour, chaque joueur peut effectuer au maximum 2 transactions financière parmi les suivantes:" },
                         { type: 'list', items: [
-                            "Respectez la limite de charge (10 points max par case).",
-                            { text: "Règles d'empilement (La Pyramide) :", subItems: [
-                                "Niveau 1 : Tous poids autorisés.",
-                                "Niveau 2 : Uniquement Léger ou Moyen.",
-                                "Niveau 3 : Uniquement Léger."
+                            { text: "Achat d'un ou plusieurs cubes '<span class='text-fragile-red font-bold'>Volant</span>' avec un tarif dégressif:", subItems: [
+                                "<b>3 Péz</b> pour 1 cube",
+                                "<b>5 Péz</b> pour 2 cubes",
+                                "<b>7 Péz</b> pour 3 cubes"
                             ]},
-                            "L'usage des palettes est obligatoire pour isoler les marchandises fragiles."
-                        ]}
+                        ]},
+                        { type: 'info', text: "Il n'est pas possible d'acheter des cubes '<span class='text-fragile-red font-bold'>Volant</span>' en prévision, ils doivent obligatoirement petre positionnés immédiatement sur un camion qui n'a pas déjà un volant et qui n'est pas en livraison." },
+                        { type: 'list', items: [
+                            { text: "Achat d'un ou plusieurs cubes '<span class='text-fragile-red font-bold'>Scanneur</span>' avec un tarif dégressif:", subItems: [
+                                "<b>2 Péz</b> pour 1 cube",
+                                "<b>3 Péz</b> pour 2 cubes",
+                                "<b>4 Péz</b> pour 3 cubes"
+                            ]},
+                        ]},
+                        { type: 'info', text: "Il n'est pas possible de stocker plus de 3 cubes '<span class='text-fragile-red font-bold'>Scanneur</span>'." },
+                        { type: 'list', items: [
+                            "Achat d'un ou plusieurs cubes '<span class='text-fragile-red font-bold'>Bidon Essence</span>' au prix défini par le dé '<span class='text-fragile-red font-bold'>Prix Essence</span>'."
+                        ]},
+                        { type: 'info', text: "Il n'est pas possible de stocker plus de 3 cubes '<span class='text-fragile-red font-bold'>Bidon Essence</span>'." },
+                        { type: 'list', items: [
+                            { text: "Achat d'un ou plusieurs camions:", subItems: [
+                                "10 Péz pour un camion blanc.<br>Un camion blanc ne peut être positionné que sur un quai avec le pictogramme '<span class='text-fragile-red font-bold'>Camion Blanc</span>' (2 emplacements).",
+                                "15 Péz pour un camion bleu.<br>Un camion bleu ne peut être positionné que sur un quai avec le pictogramme '<span class='text-fragile-red font-bold'>Camion Bleu</span>' (1 emplacement)."
+                            ]},
+                        ]},
+                        { type: 'list', items: [
+                            "Achat de l'intervention des pompiers pour <b>2 Péz</b>.<br>Cela permet de récupérer une case de l'entrepôt bloquée par une plaque '<span class='text-fragile-red font-bold'>Flamme</span>' (voir étape 6).",
+                            "Achat de l'intervention d'un technicien pour <b>2 Péz</b>.<br>Cela permet de récupérer une case de l'entrepôt bloquée par une plaque '<span class='text-fragile-red font-bold'>Flash</span>' (voir étape 6).",
+                            "Achat de l'intervention d'un électricien pour <b>3 Péz</b>.<br>Cela permet de récupérer une case de l'entrepôt bloquée par une plaque '<span class='text-fragile-red font-bold'>Flash</span>' (voir étape 6)."
+                        ]},
+                        { type: 'p', text: "Le joueur qui possède le cube '<span class='text-fragile-red font-bold'>Premier Joueur</span>' réalise ses transactions.<br>Puis c'est au tour du joueur suivant (dans le sens des aiguilles d'une montre).<br>Lorsque le dernier joueur a effectué son tour, on passe à l'étape suivante." }
                     ]
                 },
                 {
                     id: 4, 
-                    t: "Livraison", 
+                    t: "Chargement des Camions", 
                     content: [
-                        { type: 'p', text: "Le transport à travers la ville nécessite une gestion rigoureuse du carburant." },
+                        { type: 'p', text: "Cette étape est facultative." },
+                        { type: 'p', text: "Une carte commande ne peut être chargée que si tous les colis qui la constituent sont disponibles et qu'il y a suffisamment de place sur un camion." },
+                        { type: 'p', text: "Le chargement des colis sur un camion doit respecter les règles suivantes:" },
                         { type: 'list', items: [
-                            "Chaque trajet entre deux quartiers coûte 1 cube Essence.",
-                            "Respectez les restrictions spécifiques de chaque zone (ex: silence en zone résidentielle).",
-                            "Une fois livré, encaissez immédiatement vos bénéfices."
-                        ]}
+                            "Les colis d'une carte commande doivent être chargés sur le même camion.",
+                            "Un colis bleu ne peut être chargé que sur un camion bleu.",
+                            "Un camion bleu ne peut contenir que des colis bleus.",
+                        ]},
+                        { type: 'list', items: [
+                            { text: "Un camion blanc peut charger des colis rouges, verts, roses et jaunes. Mais les colis rouges représentent des produits dangereux. Ils ne peuvent donc pas être mélangés avec des colis verts, roses ou jaunes:", subItems: [
+                                "Si au moins un colis vert, rose ou jaune a été chargé sur un camion blanc, alors il n'est pas possible de charger un colis rouge sur ce camion.",
+                                "Si au moins un colis rouge a été chargé sur un camion blanc, alors il n'est pas possible de charger un colis vert, rose ou jaune sur ce camion."
+                            ]},
+                        ]},
+                        { type: 'list', items: [
+                            { text: "Cependant, si le joueur a chargé un seul colis sur un camion et qu'il a besoin de libérer rapidement ce camion (parce qu'il n'a pas les colis et/ou les cartes commandes nécessaires pour le compléter):", subItems: [
+                                "Il peut acheter un cube '<span class='text-fragile-red font-bold'>Sécurité</span>' pour <b>5 Péz</b> et le positionner sur la case du milieu sur ce camion.",
+                                "Ainsi il pourra charger un colis rouge et un colis d'une autre couleur."
+                            ]},
+                        ]},
+                        { type: 'image', src: "images/rules/step4-figure1.png"},
+                        { type: 'info', text: "Mais les gains de cette livraison seront limités. Il faut donc l'utiliser uniquement comme une action de déblocage.<br>Lorsque la commande est livrée, le cube '<span class='text-fragile-red font-bold'>Sécurité</span>' est défaussé et ne peut plus être utilisé (il faudra en acheter un autre si nécessaire)." },
+                        { type: 'p', text: "Le chargement du ou des colis dans un camion n'est possible que si le joueur possède en stock un cube '<span class='text-fragile-red font-bold'>Scanneur</span>': il faut 1 cube pour chaque carte commande chargée." },
+                        { type: 'p', text: "Lorsqu'une commande est chargée:" },
+                        { type: 'list', items: [
+                            "Le joueur est défaussé d'un cube 'Scanneur' qui est mis dans la réserver.",
+                            "Dans la zone de l'entrepôt, la carte commande est déplacée vers le haut pour afficher l'icône '<span class='text-fragile-red font-bold'>Validée</span>' <i data-lucide='circle-check' class='inline-block w-5 h-5'></i>"
+                        ]},
+                        { type: 'image', src: "images/rules/step4-figure2.png"},
+                        { type: 'p', text: "Puis c'est au tour du joueur suivant (dans le sens des aiguilles d'une montre).<br>Lorsque le dernier joueur a effectué son tour, on passe à l'étape suivante." }
                     ]
                 },
                 {
                     id: 5, 
-                    t: "Revenus & Maintenance", 
+                    t: "Livraison / Retour Camion", 
+                    content: [
+                        { type: 'p', text: "Le tour se termine par une phase administrative obligatoire." },
+                        { type: 'list', items: [
+                            "Frais de stockage : payez 1 Péz par lot non livré resté dans votre entrepôt.",
+                            "Récupérez tous vos cubes de ressources utilisés.",
+                            "Piochez une carte Évènement et appliquez ses effets immédiatement ou pour le tour suivant selon le texte."
+                        ]}
+                    ]
+                },
+                {
+                    id: 6, 
+                    t: "Evènements Aléatoires", 
                     content: [
                         { type: 'p', text: "Le tour se termine par une phase administrative obligatoire." },
                         { type: 'list', items: [
@@ -636,6 +691,17 @@ transformer la contrainte en opportunité.
                             <div class="flex justify-left  overflow-hidden my-4">
                                 <img src="${block.src}" alt="Illustration" class="max-w-full h-auto block select-none" onerror="this.parentElement.style.display='none'">
                             </div>  
+                        `;
+                    } else if (block.type === 'info') {
+                        return `
+                            <div class="bg-red-100 p-4 rounded-2xl border border-red-100">
+                                <p>${block.text}</p>
+                                ${block.image ? `
+                                    <div class="mt-2">
+                                        <img src="${block.image}" alt="Illustration" class="max-w-full h-auto block select-none" onerror="this.style.display='none'">
+                                    </div>
+                                ` : ''}
+                            </div>
                         `;
                     }
                     return '';
