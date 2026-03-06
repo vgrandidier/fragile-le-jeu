@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRAGILE - Livret de Règles Officiel</title>
-    <link rel="icon" type="image/svg+xml" href="images/truck.svg">
-    <!-- Tailwind CSS pour le style et le responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -40,50 +37,45 @@
         }
 
         .modal-bg {
-            background-color: rgba(17, 24, 39, 0.95);
-            backdrop-filter: blur(8px);
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(12px);
         }
 
-        /* Masquer la barre de défilement pour Chrome, Safari et Opera */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Style pour les onglets actifs */
+        .tab-active {
+            color: var(--fragile-red);
+            border-bottom: 4px solid var(--fragile-red);
+            background-color: rgba(210, 6, 4, 0.05);
+        }
     </style>
 </head>
 <body class="overflow-hidden">
 
     <!-- MODAL ZOOM PLEIN ÉCRAN -->
     <div id="imageModal" class="fixed inset-0 z-[100] hidden modal-bg flex flex-col items-center justify-center p-2 md:p-4" onclick="closeModal()">
-        
-        <!-- Bouton Fermer (Haut Droite) -->
         <button class="absolute top-4 right-4 md:top-8 md:right-8 text-white/50 hover:text-white transition-colors z-[110] p-2 bg-white/10 rounded-full">
             <i data-lucide="x" class="w-8 h-8 md:w-10 md:h-10"></i>
         </button>
-        
-        <!-- Navigation Précédent -->
         <button id="prevBtn" onclick="event.stopPropagation(); navigateGallery(-1)" class="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 text-white/30 hover:text-white hover:bg-white/10 p-2 md:p-4 rounded-full transition-all hidden z-[110]">
             <i data-lucide="chevron-left" class="w-10 h-10 md:w-16 md:h-16"></i>
         </button>
-
-        <!-- Container Image -->
         <div class="relative w-full h-full flex items-center justify-center" onclick="event.stopPropagation()">
             <img id="modalImg" src="" alt="Zoom" class="max-w-full max-h-full object-contain shadow-2xl animate-fade-in select-none">
-            
             <div id="modalPlaceholder" class="hidden flex flex-col items-center justify-center text-gray-500 p-10 text-center italic">
                 <i data-lucide="image" class="w-20 h-20 mb-4 opacity-20"></i>
                 <p id="modalDescText" class="text-white font-bold"></p>
             </div>
         </div>
-
-        <!-- Navigation Suivant -->
         <button id="nextBtn" onclick="event.stopPropagation(); navigateGallery(1)" class="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 text-white/30 hover:text-white hover:bg-white/10 p-2 md:p-4 rounded-full transition-all hidden z-[110]">
             <i data-lucide="chevron-right" class="w-10 h-10 md:w-16 md:h-16"></i>
         </button>
-
-        <!-- Barre d'infos (Bas) -->
-        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 flex flex-col md:flex-row justify-between items-center gap-4 pointer-events-none">
-            <div class="text-center md:text-left">
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 flex flex-col md:flex-row justify-between items-center gap-4 pointer-events-none text-center md:text-left">
+            <div>
                 <p id="modalTitle" class="text-white font-black uppercase tracking-widest text-sm md:text-lg italic"></p>
-                <p id="modalSubTitle" class="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-1">Livret FRAGILE V4.0</p>
+                <p class="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-1">Livret FRAGILE V4.0</p>
             </div>
             <span id="galleryCounter" class="bg-fragile-red text-white px-6 py-2 rounded-full font-black text-xs hidden shadow-lg"></span>
         </div>
@@ -93,79 +85,60 @@
         
         <!-- SIDEBAR -->
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-80 bg-gray-900 border-r-8 border-fragile-red sidebar-transition -translate-x-full md:translate-x-0 md:relative flex flex-col">
-            <div class="p-10">
+            <div class="p-10 text-center md:text-left">
                 <h1 class="text-4xl font-black italic uppercase text-white tracking-tighter">
                     FRA<span class="text-fragile-red">GI</span>LE
                 </h1>
-                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-2">Un faux mouvement, et tout s'écroule!</p>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-2">Logistics Simulator</p>
             </div>
 
             <nav class="flex-1 px-6 space-y-2 overflow-y-auto no-scrollbar">
-                <button onclick="loadPage('intro')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-white font-bold uppercase text-xs tracking-widest bg-fragile-red shadow-lg" data-page="intro">
+                <button onclick="loadPage('intro')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="intro">
                     <i data-lucide="info" class="w-5 h-5"></i> Bienvenue
                 </button>
-                <button onclick="loadPage('galerie')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="galerie">
+                <button onclick="loadPage('galerie')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="galerie">
                     <i data-lucide="image" class="w-5 h-5"></i> Galerie Photos
                 </button>
-                <button onclick="loadPage('materiel')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="materiel">
+                <button onclick="loadPage('materiel')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="materiel">
                     <i data-lucide="package" class="w-5 h-5"></i> Matériel
                 </button>
-                <button onclick="loadPage('entrepot')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="entrepot">
-                    <i data-lucide="warehouse" class="w-5 h-5"></i> Entrepôt
-                </button>
-                <button onclick="loadPage('ville')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="ville">
-                    <i data-lucide="map-pin" class="w-5 h-5"></i> Ville
-                </button>
-                <button onclick="loadPage('commandes')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="commandes">
-                    <i data-lucide="shopping-cart" class="w-5 h-5"></i> Commandes
-                </button>
-                <button onclick="loadPage('banque')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="banque">
-                    <i data-lucide="credit-card" class="w-5 h-5"></i> Banque
-                </button>
-                <button onclick="loadPage('camions')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="camions">
-                    <i data-lucide="truck" class="w-5 h-5"></i> Camions
-                </button>
-                <button onclick="loadPage('setup')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="setup">
+                <button onclick="loadPage('setup')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="setup">
                     <i data-lucide="settings" class="w-5 h-5"></i> Mise en place
                 </button>
-                <button onclick="loadPage('tour')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="tour">
+                <button onclick="loadPage('mode2j')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="mode2j">
+                    <i data-lucide="swords" class="w-5 h-5"></i> Mode Duel (2J)
+                </button>
+                <button onclick="loadPage('tour')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="tour">
                     <i data-lucide="rotate-cw" class="w-5 h-5"></i> Tour de Jeu
                 </button>
-                <button onclick="loadPage('fin')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="fin">
+                <button onclick="loadPage('fin')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="fin">
                     <i data-lucide="trophy" class="w-5 h-5"></i> Fin de partie
                 </button>
-                <button onclick="loadPage('questionnaire')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-400 hover:bg-gray-800 font-bold uppercase text-xs tracking-widest" data-page="questionnaire">
+                <button onclick="loadPage('questionnaire')" class="nav-item w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold uppercase text-xs tracking-widest" data-page="questionnaire">
                     <i data-lucide="message-square" class="w-5 h-5"></i> Questionnaire
                 </button>
             </nav>
 
             <div class="p-10 border-t border-gray-800">
-                <p class="text-[10px] text-gray-600 font-black uppercase tracking-widest italic">PROTOTYPE V4</p>
+                <p class="text-[10px] text-gray-600 font-black uppercase tracking-widest italic">Livret Officiel V4</p>
             </div>
         </aside>
 
         <!-- MAIN CONTENT -->
         <main class="flex-1 flex flex-col min-w-0">
-            <!-- Header Mobile -->
             <header class="md:hidden bg-gray-900 text-white p-5 flex justify-between items-center shadow-xl">
                 <span class="font-black italic uppercase tracking-tighter">FRA<span class="text-fragile-red">GI</span>LE</span>
-                <button onclick="toggleSidebar()" class="p-2 bg-gray-800 rounded-xl hover:bg-fragile-red transition-colors">
+                <button onclick="toggleSidebar()" class="p-2 bg-gray-800 rounded-xl">
                     <i data-lucide="menu" id="menuIcon"></i>
                 </button>
             </header>
-
-            <!-- Scrollable Content -->
-            <div id="content" class="flex-1 overflow-y-auto p-6 md:p-16 lg:p-24 bg-white">
-                <!-- LE CONTENU SERA INJECTÉ ICI PAR JS -->
-            </div>
+            <div id="content" class="flex-1 overflow-y-auto p-6 md:p-16 lg:p-24 bg-white"></div>
         </main>
     </div>
 
-    <!-- SCRIPTS ET TEMPLATES -->
     <script>
-        // --- DONNÉES DU JEU ---
         const galleryImages = [
-            { id: 0, title: "Couverture FRAGILE", src: "images/fragile-cover.png", desc: "Couverture FRAGILE" },
+             { id: 0, title: "Couverture FRAGILE", src: "images/fragile-cover.png", desc: "Couverture FRAGILE" },
             { id: 1, title: "Vue d'ensemble", src: "images/materiel-vue-ensemble.png", desc: "Vue d'ensemble" },
             { id: 2, title: "Plateau central", src: "images/ingame-04.jpg", desc: "Plateau central" },
             { id: 3, title: "Influence des quartiers", src: "images/ingame-03.jpg", desc: "Influence des quartiers" },
@@ -173,40 +146,33 @@
             { id: 5, title: "Matériel: les cubes", src: "images/materiel-cubes.png", desc: "Matériel: les cubes" },
             { id: 6, title: "Matériel: les cartes", src: "images/materiel-cartes.png", desc: "Matériel: les cartes" },
             { id: 7, title: "Matériel: les jetons et dés", src: "images/materiel-jetons.png", desc: "Matériel: les jetons et dés" }
+
         ];
 
         let currentGalleryIndex = 0;
+        let currentMaterielTab = 'overview';
 
-        // --- MOTEUR DE NAVIGATION ---
         function loadPage(pageId) {
             const container = document.getElementById('content');
             container.innerHTML = '';
             container.className = "flex-1 overflow-y-auto p-6 md:p-16 lg:p-24 bg-white animate-fade-in";
             
-            // Mise à jour de l'UI du menu
             document.querySelectorAll('.nav-item').forEach(btn => {
                 if(btn.dataset.page === pageId) {
                     btn.classList.add('bg-fragile-red', 'text-white', 'shadow-lg');
-                    btn.classList.remove('text-gray-400', 'hover:bg-gray-800');
                 } else {
                     btn.classList.remove('bg-fragile-red', 'text-white', 'shadow-lg');
                     btn.classList.add('text-gray-400', 'hover:bg-gray-800');
                 }
             });
 
-            // Injection du contenu selon la page
             switch(pageId) {
                 case 'intro': renderIntro(container); break;
                 case 'galerie': renderGalerie(container); break;
                 case 'materiel': renderMateriel(container); break;
-                case 'entrepot': renderEntrepot(container); break;
-                case 'ville': renderVille(container); break;
-                case 'commandes': renderCommandes(container); break;
-                case 'banque': renderBanque(container); break;
-                case 'camions': renderCamions(container); break;
                 case 'setup': renderSetup(container); break;
+                case 'mode2j': renderMode2J(container); break;
                 case 'tour': renderTour(container); break;
-                case 'stockage': renderStockage(container); break;
                 case 'fin': renderFin(container); break;
                 case 'questionnaire': renderQuestionnaire(container); break;
             }
@@ -215,8 +181,6 @@
             lucide.createIcons();
             window.scrollTo(0, 0);
         }
-
-        // --- FONCTIONS DE RENDU ---
 
         function renderIntro(container) {
             container.innerHTML = `
@@ -251,29 +215,84 @@ transformer la contrainte en opportunité.
             `;
         }
 
-        function renderGalerie(container) {
-            let grid = galleryImages.map((img, idx) => `
-                <div onclick="openGallery(${idx})" class="aspect-square bg-gray-100 rounded-[2rem] border-4 border-white shadow-sm hover:shadow-xl hover:scale-[1.03] transition-all cursor-zoom-in overflow-hidden relative group">
-                    <img src="${img.src}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                    <div class="hidden absolute inset-0 flex flex-col items-center justify-center bg-gray-50 text-gray-400 p-4 text-center">
-                        <i data-lucide="image" class="w-8 h-8 mb-2"></i>
-                        <span class="text-[9px] font-black uppercase">${img.title}</span>
-                    </div>
-                </div>
-            `).join('');
-
-            container.innerHTML = `
-                <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Galerie Photos</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">${grid}</div>
-                </div>
-            `;
-        }
-
         function renderMateriel(container) {
             container.innerHTML = `
+                <div class="space-y-8 animate-fade-in">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Matériel & Composants</h2>
+                    
+                    <!-- Navigation Mobile (Liste déroulante) -->
+                    <div class="md:hidden sticky top-0 bg-white z-20 pb-4 border-b border-gray-100">
+                        <label for="materiel-select" class="block text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widest">Catégorie de matériel</label>
+                        <div class="relative">
+                            <select id="materiel-select" onchange="switchTab(this.value)" class="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3 font-bold text-gray-900 appearance-none focus:border-fragile-red outline-none transition-colors">
+                                <option value="overview">Vue d'ensemble</option>
+                                <option value="warehouse">Entrepôt</option>
+                                <option value="city">Ville</option>
+                                <option value="orders">Commandes</option>
+                                <option value="trucks">Camions</option>
+                                <option value="bank">Banque</option>
+                            </select>
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Desktop (Onglets classiques) -->
+                    <div class="hidden md:flex overflow-x-auto no-scrollbar border-b border-gray-200 sticky top-0 bg-white z-20">
+                        <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn shrink-0 px-6 py-4 font-black uppercase text-xs tracking-widest text-gray-400 transition-all">Vue d'ensemble</button>
+                        <button onclick="switchTab('warehouse')" id="tab-warehouse" class="tab-btn shrink-0 px-6 py-4 font-black uppercase text-xs tracking-widest text-gray-400 transition-all">Entrepôt</button>
+                        <button onclick="switchTab('city')" id="tab-city" class="tab-btn shrink-0 px-6 py-4 font-black uppercase text-xs tracking-widest text-gray-400 transition-all">Ville</button>
+                        <button onclick="switchTab('orders')" id="tab-orders" class="tab-btn shrink-0 px-6 py-4 font-black uppercase text-xs tracking-widest text-gray-400 transition-all">Commandes</button>
+                        <button onclick="switchTab('trucks')" id="tab-trucks" class="tab-btn shrink-0 px-6 py-4 font-black uppercase text-xs tracking-widest text-gray-400 transition-all">Camions</button>
+                        <button onclick="switchTab('bank')" id="tab-bank" class="tab-btn shrink-0 px-6 py-4 font-black uppercase text-xs tracking-widest text-gray-400 transition-all">Banque</button>
+                    </div>
+
+                    <!-- Conteneur de l'onglet -->
+                    <div id="tab-content" class="py-6 min-h-[400px]">
+                        <!-- Le contenu sera injecté ici par switchTab -->
+                    </div>
+                </div>
+            `;
+            // Activer l'onglet par défaut (synchronise select et tabs)
+            switchTab(currentMaterielTab);
+        }
+
+        function switchTab(tabId) {
+            currentMaterielTab = tabId;
+            const content = document.getElementById('tab-content');
+            
+            // Mise à jour de l'UI des onglets Desktop
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) activeTab.classList.add('tab-active');
+
+            // Mise à jour de la liste déroulante Mobile
+            const select = document.getElementById('materiel-select');
+            if (select) select.value = tabId;
+
+            content.innerHTML = '<div class="flex justify-center py-20 animate-pulse text-gray-300"><i data-lucide="loader" class="w-10 h-10"></i></div>';
+            lucide.createIcons();
+
+            setTimeout(() => {
+                content.innerHTML = '';
+                switch(tabId) {
+                    case 'overview': renderOverviewTab(content); break;
+                    case 'warehouse': renderWarehouseTab(content); break;
+                    case 'city': renderCityTab(content); break;
+                    case 'orders': renderOrdersTab(content); break;
+                    case 'bank': renderBankTab(content); break;
+                    case 'trucks': renderTrucksTab(content); break;
+                }
+                lucide.createIcons();
+            }, 50); // Délai réduit pour plus de réactivité
+        }
+
+        // --- CONTENU DES ONGLETS ---
+
+        function renderOverviewTab(container) {
+            container.innerHTML = `
                 <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Matériel</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         ${renderMaterialCard("Monnaie (Péz)", ["16 pièces de 10 Péz", "24 pièces de 5 Péz", "36 pièces de 3 Péz", "48 pièces de 1 Péz"], "images/materiel/monnaie.png")}
                         ${renderMaterialCard("Ressources", ["12 cubes 'Volant'", "12 cubes 'Scanneur'", "12 cubes 'Bidon Essence'", "10 cubes 'Banque'"], "images/ressources.jpg")}
@@ -289,11 +308,9 @@ transformer la contrainte en opportunité.
             `;
         }
 
-        function renderEntrepot(container) {
+        function renderWarehouseTab(container) {
             container.innerHTML = `
                 <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Plateau 'Entrepôt'</h2>
-                    
                     <div class="flex justify-left items-center">
                         <img src="images/materiel/entrepot.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
@@ -317,11 +334,9 @@ transformer la contrainte en opportunité.
             `;
         }
 
-        function renderVille(container) {
+        function renderCityTab(container) {
             container.innerHTML = `
                 <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Plateau 'Ville'</h2>
-                    
                     <div class="flex justify-left items-center">
                         <img src="images/materiel/ville.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
@@ -350,11 +365,9 @@ transformer la contrainte en opportunité.
             `;
         }
 
-        function renderCommandes(container) {
+        function renderOrdersTab(container) {
             container.innerHTML = `
                 <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Cartes des Commandes</h2>
-                    
                     <div class="flex justify-left items-center">
                         <img src="images/materiel/commandes.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
@@ -378,11 +391,9 @@ transformer la contrainte en opportunité.
             `;
         }
 
-        function renderBanque(container) {
+        function renderBankTab(container) {
             container.innerHTML = `
                 <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Cartes 'Banque''</h2>
-                    
                     <div class="flex justify-left items-center">
                         <img src="images/materiel/banque.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
@@ -410,11 +421,9 @@ transformer la contrainte en opportunité.
             `;
         }
 
-        function renderCamions(container) {
+        function renderTrucksTab(container) {
             container.innerHTML = `
                 <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Cartes 'Camions''</h2>
-                    
                     <div class="flex justify-left items-center">
                         <img src="images/materiel/camions.png" class="max-w-full h-auto block" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="hidden aspect-video flex flex-col items-center justify-center text-gray-300 p-20 w-full">
@@ -433,6 +442,8 @@ transformer la contrainte en opportunité.
                 </div>
             `;
         }
+
+        // --- AUTRES PAGES ---
 
         function renderSetup(container) {
             container.innerHTML = `
@@ -501,6 +512,23 @@ transformer la contrainte en opportunité.
                     </div>
                 </div>
             `;
+        }
+
+        function renderMode2J(container) {
+            container.innerHTML = `
+                <div class="space-y-10">
+                    <div class="flex items-center gap-6 border-b-8 border-fragile-red pb-6">
+                        <div class="bg-fragile-red text-white p-4 rounded-3xl shadow-lg rotate-3"><i data-lucide="swords" class="w-12 h-12"></i></div>
+                        <h2 class="text-5xl font-black uppercase italic tracking-tighter">Mode Duel (2J)</h2>
+                    </div>
+                    <div class="bg-gray-900 text-white p-8 rounded-[3rem] border-4 border-white italic">
+                        <p class="text-xl">"Un affrontement frontal inspiré du FIJ Cannes 2026."</p>
+                    </div>
+                    <div class="p-10 bg-white rounded-3xl border-2 border-gray-100 shadow-xl space-y-4">
+                        <h3 class="text-2xl font-black uppercase italic">Éviction Logistique</h3>
+                        <p class="text-gray-700 leading-relaxed">Au lieu d'ajouter un cube, vous pouvez retirer un cube adverse pour 1 cube Scanneur supplémentaire.</p>
+                    </div>
+                </div>`;
         }
 
         function renderTour(container) {
@@ -731,127 +759,40 @@ transformer la contrainte en opportunité.
             `;
         }
 
-        function renderStockage(container) {
-            container.innerHTML = `
-                <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4 text-fragile-red flex items-center gap-4">
-                        <i data-lucide="layers" class="w-10 h-10"></i> Stockage
-                    </h2>
-                    <div class="grid lg:grid-cols-2 gap-10">
-                        <div class="space-y-6">
-                            <div class="bg-fragile-red text-white p-8 rounded-[2rem] shadow-xl transform -rotate-1">
-                                <h4 class="font-black text-2xl uppercase italic mb-2">L'Équilibre Précaire</h4>
-                                <p class="opacity-90">Un faux mouvement peut briser votre bilan.</p>
-                            </div>
-                            <div class="space-y-4">
-                                ${renderRuleBlock("Poids", "Léger (1), Moyen (3), Lourd (6). Max 10 par case.")}
-                                ${renderRuleBlock("Hauteur", "Maximum 3 niveaux (marchandises + palettes).")}
-                                ${renderRuleBlock("Stabilité", "Pas de lourd sur fragile sans palette intercalaire.")}
-                            </div>
-                        </div>
-                        <div class="bg-gray-100 rounded-[2rem] p-10 flex flex-col items-center justify-center border-4 border-white shadow-inner cursor-zoom-in" onclick="openZoom('images/empilement.jpg', 'Schéma de stockage')">
-                            <i data-lucide="alert-triangle" class="w-16 h-16 text-gray-200 mb-4"></i>
-                            <span class="text-xs text-gray-400 uppercase font-black tracking-widest">[Image : Schéma de Stockage]</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
         function renderFin(container) {
-            container.innerHTML = `
-                <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Bilan Final</h2>
-                    <div class="bg-gray-900 text-white p-12 rounded-[4rem] shadow-2xl relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-red-600/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-                        <div class="relative z-10 space-y-8 max-w-xl mx-auto">
-                            ${renderScoreLine("Bénéfices", "Contrats livrés", "+ VAL", "text-green-400")}
-                            ${renderScoreLine("Trésorerie", "Péz restants", "+ VAL", "text-green-400")}
-                            <div class="h-px bg-gray-800 my-4"></div>
-                            ${renderScoreLine("Attente", "Lots non livrés", "- 5 Péz", "text-red-400")}
-                            ${renderScoreLine("Dettes", "Emprunts non soldés", "- DETTE", "text-red-400")}
-                            <div class="pt-10 flex justify-between items-center border-t border-gray-800 mt-8">
-                                <span class="text-4xl font-black italic uppercase text-yellow-500">Score</span>
-                                <span class="text-6xl font-black italic text-white">= ?</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+            container.innerHTML = `<div class="space-y-10"><h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-gray-900 pb-4">Bilan Final</h2><div class="bg-gray-900 text-white p-12 rounded-[4rem]">Score = Trésorerie - Dettes.</div></div>`;
         }
 
         function renderQuestionnaire(container) {
-            container.innerHTML = `
-                <div class="space-y-10">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-fragile-red pb-4 text-fragile-red">Questionnaire</h2>
-                    <div class="bg-white p-12 rounded-[3.5rem] border-4 border-gray-900 shadow-2xl">
-                        <h3 class="text-3xl font-black text-gray-900 italic mb-6 uppercase">Votre avis compte !</h3>
-                        <p class="text-xl text-gray-700 leading-relaxed mb-10">
-                            Afin d'améliorer le jeu (matériel, règles ou gameplay), merci de prendre 2 minutes pour répondre au questionnaire en ligne.
-                        </p>
-                        <a href="#" class="inline-flex items-center gap-4 bg-fragile-red text-white px-12 py-6 rounded-3xl font-black uppercase italic tracking-widest hover:scale-105 transition-transform shadow-xl">
-                            Accéder au formulaire <i data-lucide="external-link"></i>
-                        </a>
-                    </div>
-                </div>
-            `;
+            container.innerHTML = `<div class="space-y-10"><h2 class="text-4xl font-black uppercase italic tracking-tighter border-b-4 border-fragile-red pb-4 text-fragile-red">Questionnaire</h2><div class="bg-white p-12 rounded-[3.5rem] border-4 border-gray-900 shadow-2xl">
+                <p class="text-xl text-gray-700 mb-10">Aidez-nous à améliorer le jeu en répondant au questionnaire.</p>
+                <a href="#" class="inline-flex items-center gap-4 bg-fragile-red text-white px-12 py-6 rounded-3xl font-black uppercase italic shadow-xl">Accéder au formulaire <i data-lucide="external-link"></i></a>
+            </div></div>`;
         }
 
-        // --- COMPOSANTS UI REUTILISABLES ---
-
+        // --- HELPERS ---
         function renderMaterialCard(title, items, imgSrc) {
-            return `
-                <div class="bg-white p-8 rounded-[2.5rem] border-2 border-gray-100 shadow-sm hover:shadow-xl transition-all group">
-                    <div class="h-40 bg-gray-50 rounded-2xl mb-6 flex items-center justify-center overflow-hidden border-4 border-white shadow-inner cursor-zoom-in group-hover:border-red-200 transition-colors" onclick="openZoom('${imgSrc}', '${title}')">
-                        <img src="${imgSrc}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                        <span class="hidden p-6 text-gray-400 text-xs italic text-center">[Image : ${title}]</span>
-                    </div>
-                    <h4 class="font-black text-gray-900 text-sm uppercase mb-4 border-b-4 border-fragile-red pb-1 inline-block tracking-tighter">${title}</h4>
-                    <ul class="space-y-2">
-                        ${items.map(i => `<li class="text-xs text-gray-500 font-bold flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-fragile-red"></div> ${i}</li>`).join('')}
-                    </ul>
+            return `<div class="bg-white p-8 rounded-[2.5rem] border-2 border-gray-100 shadow-sm group">
+                <div class="h-40 bg-gray-50 rounded-2xl mb-6 flex items-center justify-center overflow-hidden border-4 border-white shadow-inner" onclick="openZoom('${imgSrc}', '${title}')">
+                    <img src="${imgSrc}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span class="hidden p-6 text-gray-400 text-xs italic text-center">[Image : ${title}]</span>
                 </div>
-            `;
+                <h4 class="font-black text-gray-900 text-sm uppercase mb-4 tracking-tighter">${title}</h4>
+                <ul class="space-y-2">${items.map(i => `<li class="text-xs text-gray-500 font-bold flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-fragile-red"></div> ${i}</li>`).join('')}</ul>
+            </div>`;
         }
 
         function renderSetupDetail(num, title, desc) {
-            return `
-                <div class="flex gap-6 p-4 bg-white items-start">
-                    <div class="w-7 h-7 bg-fragile-red text-white rounded-full flex items-center justify-center text-sm font-black shrink-0">
-                        ${num}
-                    </div>
-                    <div>
-                        <h3 class="font-black text-gray-900 text-lg uppercase mb-1 italic tracking-tight">${title}</h3>
-                        <p class="text-gray-600 text-lg leading-relaxed">${desc}</p>
-                    </div>
-                </div>
-            `;
+            return `<div class="flex gap-6 p-4 bg-white items-start"><div class="w-7 h-7 bg-fragile-red text-white rounded-full flex items-center justify-center text-sm font-black shrink-0">${num}</div><div><h3 class="font-black text-gray-900 text-lg uppercase mb-1 italic tracking-tight">${title}</h3><p class="text-gray-600 text-sm leading-relaxed">${desc}</p></div></div>`;
         }
 
         function renderRuleBlock(title, text) {
-            return `
-                <div class="p-6 bg-white rounded-2xl border-2 border-gray-100 shadow-sm">
-                    <h5 class="font-black text-gray-900 text-sm mb-2 uppercase tracking-tight flex items-center gap-2">
-                        <div class="w-1 h-4 bg-fragile-red"></div> ${title}
-                    </h5>
-                    <p class="text-gray-500 text-sm leading-relaxed font-medium">${text}</p>
-                </div>
-            `;
+            return `<div class="p-6 bg-white rounded-2xl border-2 border-gray-100 shadow-sm"><h5 class="font-black text-gray-900 text-sm mb-2 uppercase tracking-tight flex items-center gap-2"><div class="w-1 h-4 bg-fragile-red"></div> ${title}</h5><p class="text-gray-500 text-sm leading-relaxed font-medium">${text}</p></div>`;
         }
 
         function renderScoreLine(label, sub, val, color) {
-            return `
-                <div class="flex justify-between items-center group bg-white/5 p-4 rounded-2xl">
-                    <div>
-                        <span class="block font-black uppercase text-base tracking-widest">${label}</span>
-                        <span class="text-[10px] text-gray-500 italic uppercase font-bold">${sub}</span>
-                    </div>
-                    <div class="text-2xl font-mono font-black ${color}">${val}</div>
-                </div>
-            `;
+            return `<div class="flex justify-between items-center group bg-white/5 p-4 rounded-xl"><div><span class="block font-black uppercase text-sm tracking-widest">${label}</span><span class="text-[10px] text-gray-500 italic uppercase font-bold">${sub}</span></div><div class="text-2xl font-mono font-black ${color}">${val}</div></div>`;
         }
-
-        // --- GESTION DES MODALES ET GALERIE ---
 
         function openGallery(index) {
             currentGalleryIndex = index;
@@ -870,30 +811,20 @@ transformer la contrainte en opportunité.
         function updateModal(src, desc, title, isGallery) {
             const img = document.getElementById('modalImg');
             const placeholder = document.getElementById('modalPlaceholder');
-            const prev = document.getElementById('prevBtn');
-            const next = document.getElementById('nextBtn');
-            const counter = document.getElementById('galleryCounter');
-            
             img.src = src;
             img.style.display = 'block';
             placeholder.classList.add('hidden');
             document.getElementById('modalTitle').textContent = title || "Vue détaillée";
-            document.getElementById('modalDescText').textContent = desc || "";
-
-            img.onerror = () => {
-                img.style.display = 'none';
-                placeholder.classList.remove('hidden');
-            };
-
+            img.onerror = () => { img.style.display = 'none'; placeholder.classList.remove('hidden'); };
             if(isGallery) {
-                prev.classList.remove('hidden');
-                next.classList.remove('hidden');
-                counter.classList.remove('hidden');
-                counter.textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+                document.getElementById('prevBtn').classList.remove('hidden');
+                document.getElementById('nextBtn').classList.remove('hidden');
+                document.getElementById('galleryCounter').classList.remove('hidden');
+                document.getElementById('galleryCounter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
             } else {
-                prev.classList.add('hidden');
-                next.classList.add('hidden');
-                counter.classList.add('hidden');
+                document.getElementById('prevBtn').classList.add('hidden');
+                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('galleryCounter').classList.add('hidden');
             }
         }
 
@@ -901,8 +832,7 @@ transformer la contrainte en opportunité.
             currentGalleryIndex += dir;
             if(currentGalleryIndex < 0) currentGalleryIndex = galleryImages.length - 1;
             if(currentGalleryIndex >= galleryImages.length) currentGalleryIndex = 0;
-            const img = galleryImages[currentGalleryIndex];
-            updateModal(img.src, img.desc, img.title, true);
+            openGallery(currentGalleryIndex);
         }
 
         function closeModal() {
@@ -910,10 +840,8 @@ transformer la contrainte en opportunité.
             document.getElementById('imageModal').classList.remove('flex');
         }
 
-        // --- NAVIGATION SIDEBAR ---
         function toggleSidebar(force) {
             const sidebar = document.getElementById('sidebar');
-            const icon = document.getElementById('menuIcon');
             if(force === false || sidebar.classList.contains('translate-x-0')) {
                 sidebar.classList.add('-translate-x-full');
                 sidebar.classList.remove('translate-x-0');
@@ -923,11 +851,7 @@ transformer la contrainte en opportunité.
             }
         }
 
-        // --- INITIALISATION ---
-        window.onload = () => {
-            loadPage('intro');
-            lucide.createIcons();
-        };
+        window.onload = () => { loadPage('intro'); lucide.createIcons(); };
     </script>
 </body>
 </html>
